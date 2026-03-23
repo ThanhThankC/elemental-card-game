@@ -97,7 +97,7 @@ Each player's side of the field contains:
 ---
 
 ## Project Structure
-
+```
 Assets/
 ├── Fonts/
 └── Scripts/
