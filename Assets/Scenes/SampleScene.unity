@@ -2525,9 +2525,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3114524b51f39ce47a7addf25d2930fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSlots: 1
+  maxSlots: 3
   slotTransforms:
   - {fileID: 161792452}
+  - {fileID: 144089953}
+  - {fileID: 1163960333}
 --- !u!1 &370408638
 GameObject:
   m_ObjectHideFlags: 0
@@ -3864,7 +3866,7 @@ GameObject:
   - component: {fileID: 650124384}
   - component: {fileID: 650124385}
   m_Layer: 5
-  m_Name: SetController
+  m_Name: ContinuousSpellManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3898,12 +3900,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 650124383}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b90dd2d0bccdb9243bfcd160b077ee54, type: 3}
+  m_Script: {fileID: 11500000, guid: a9e20ce6946c3fc4d9a481a9bd35be72, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spellZone: {fileID: 356010167}
-  handLayout: {fileID: 1907012643}
-  setDuration: 0.4
 --- !u!1 &658492047
 GameObject:
   m_ObjectHideFlags: 0
@@ -6114,6 +6113,7 @@ MonoBehaviour:
   handLayout: {fileID: 1907012643}
   graveyardZone: {fileID: 572037458}
   deckManager: {fileID: 1982424320}
+  setDuration: 0.4
 --- !u!1 &973422651
 GameObject:
   m_ObjectHideFlags: 0
@@ -12372,14 +12372,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 2bcb58f23071de24f9d0d162d1372c7a, type: 2}
   - {fileID: 11400000, guid: 802a43d1f62643a4a959e88ff97f573d, type: 2}
   - {fileID: 11400000, guid: 87e270126d3554d449b854b15213f4dc, type: 2}
-  - {fileID: 11400000, guid: dcb8838cef7eb2f43816801fe1655d97, type: 2}
-  - {fileID: 11400000, guid: 9d2309c4ebd28d74d8a3af60775e3da9, type: 2}
-  - {fileID: 11400000, guid: c63ebd19f2770f04fbca3bdc330a1c4c, type: 2}
-  - {fileID: 11400000, guid: 91b57b308df003a4d9eaf152f1747a44, type: 2}
-  - {fileID: 11400000, guid: 8e0474b1486c84b42b2a0bb819d83700, type: 2}
-  - {fileID: 11400000, guid: cfb60bffd7010ac48af6bbc3383d3c2e, type: 2}
-  - {fileID: 11400000, guid: 7a57f12377d6b6849bb2298ad242052c, type: 2}
-  - {fileID: 11400000, guid: 8d5fd0bf3f6ea3f4cb98864f65054167, type: 2}
+  - {fileID: 11400000, guid: 939d9e23ecce9ab4285d922d35f2e017, type: 2}
+  - {fileID: 11400000, guid: 939d9e23ecce9ab4285d922d35f2e017, type: 2}
+  - {fileID: 11400000, guid: 939d9e23ecce9ab4285d922d35f2e017, type: 2}
+  - {fileID: 11400000, guid: 939d9e23ecce9ab4285d922d35f2e017, type: 2}
   maxHandSize: 7
   initialDrawCount: 5
   drawDuration: 0.5
