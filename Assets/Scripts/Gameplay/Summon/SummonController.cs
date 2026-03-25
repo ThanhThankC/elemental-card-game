@@ -77,13 +77,14 @@ public class SummonController : MonoBehaviour
     /// </summary>
     public void ExecuteSummon(Card monster, IReadOnlyList<Card> sacrifices)
     {
-        GamePhaseManager.Instance.SetPhase(GamePhase.Summoning);
         CardActionMenu.Instance?.HideMenu();
 
         int targetSlot = DetermineTargetSlot(sacrifices);
 
         if (targetSlot == -1)
         { Debug.LogWarning("[SummonController] No space left!"); return; }
+
+        GamePhaseManager.Instance.SetPhase(GamePhase.Summoning);
 
         Sequence summonSeq = DOTween.Sequence();
 
@@ -173,6 +174,7 @@ public class SummonController : MonoBehaviour
             Debug.LogWarning("[SummonController] Target transform is null!");
             monster.SetState(CardState.InHand);
             isSummoning = false;
+            GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
             return;
         }
 
@@ -195,21 +197,13 @@ public class SummonController : MonoBehaviour
             },
             onKill: () =>
             {
-                if (!isCompleted) OnAnimationCancelled(monster);
+                if (!isCompleted)
+                {
+                    OnAnimationCancelled(monster);
+                    GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+                }
             }
          );
-
-        //Sequence summonSeq = DOTween.Sequence();
-
-        //summonSeq.Append(monster.transform.DOMove(targetSlot.position, summonDuration).SetEase(summonEase));
-        //summonSeq.Join(monster.transform.DORotateQuaternion(Quaternion.identity, summonDuration).SetEase(summonEase));
-        //summonSeq.Append(monster.transform.DOScale(CardVisualConfig.GetRestingScale(CardState.OnField), summonDuration).SetEase(summonEase));
-        //summonSeq.OnComplete(() => {
-        //    FinalizeSummon(monster, slotIndex);
-        //    GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
-        //    isCompleted = true;
-        //});
-        //summonSeq.OnKill(() => { if (!isCompleted) OnAnimationCancelled(monster); });
     }
 
     /// <summary>

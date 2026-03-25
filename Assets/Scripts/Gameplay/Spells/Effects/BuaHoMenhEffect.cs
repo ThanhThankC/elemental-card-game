@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class BuaHoMenhEffect : IContinuousSpellEffect
 {
-    private int buffAmount;
+    private readonly int buffAmount;
 
     public SpellEffectID EffectID => SpellEffectID.BuaHoMenh;
+
+    public bool SendToGraveyardFirst => false;
+
+    public bool NeedsTarget => false;
 
     public BuaHoMenhEffect(int buffAmount)
     {
@@ -15,39 +19,27 @@ public class BuaHoMenhEffect : IContinuousSpellEffect
 
     public bool CanActivate(SpellContext context)
     {
-        return context.SpellZone.HasEmptySlot();
+        return true;
     }
 
-    public void OnActivate(SpellContext context)
+    public void Execute(SpellContext context)
     {
-        BuffATKForMonsterOnField(context.PlayerMonsterZone.GetAllCards());
-
-        SummonController.Instance.OnMonsterSummoned += BuffATKForSummonMonster;
-    }
-
-    public void OnDeactivate(SpellContext context)
-    {
-        if (SummonController.Instance != null)
+        foreach (Card card in context.PlayerMonsterZone.GetAllCards())
         {
-            SummonController.Instance.OnMonsterSummoned -= BuffATKForSummonMonster;
+            card.ModifyATK(buffAmount);
         }
     }
 
-    private void BuffATKForMonsterOnField(List<Card> cards)
-    {
-        if (cards == null || cards.Count == 0) return;
-
-        foreach (Card card in cards)
-        {
-            card?.ModifyATK(buffAmount);
-        }
-        Debug.Log($"[BuaHoMenh] {cards.Count} cards (+ {buffAmount} ATK)!");
-    }
-
-    private void BuffATKForSummonMonster(Card monster)
+    public void OnMonsterSummoned(Card monster)
     {
         if (monster == null) return;
         monster.ModifyATK(buffAmount);
         Debug.Log($"[BuffATKDEF] {monster.GetCardData().GetCardName()} + {buffAmount} ATK/DEF");
     }
+
+    public void OnDeactivate()
+    {
+
+    }
+
 }

@@ -1,14 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class SpellController : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private MonsterZone playerMonsterZone;
     [SerializeField] private SpellZone spellZone;
     [SerializeField] private HandLayoutManager handLayout;
     [SerializeField] private Transform graveyardZone;
     [SerializeField] private DeckManager deckManager;
+
+    [Header("Animation")]
+    [SerializeField] private float setDuration = 0.4f;
 
     private static SpellController instance;
     public static SpellController Instance
@@ -23,7 +25,6 @@ public class SpellController : MonoBehaviour
 
     private Card spellCard;
     private ISpellEffect effect;
-    //private IContinuousSpellEffect continuousEffect;
 
     public bool IsWaitingForTarget => spellCard != null && effect != null;
 
@@ -37,54 +38,13 @@ public class SpellController : MonoBehaviour
         instance = this;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) && IsWaitingForTarget)
-        {
-            CancelTargeting();
-        }
-    }
-
-    public void RequestSet(Card spellCard)
-    {
-        if (spellCard == null) return;
-
-        CardData data = spellCard.GetCardData();
-        //this.spellCard = spellCard;
-        IContinuousSpellEffect continuousEffect = SpellEffectRegistry.BuildContinous(data);
-
-        if (continuousEffect == null)
-        {
-            Debug.LogWarning($"[SpellController] No continuos effect found for {data.GetCardName()}");
-            return;
-        }
-
-        SpellContext context = new SpellContext
-        {
-            SpellCard = spellCard,
-            SpellZone = spellZone,
-            PlayerMonsterZone = playerMonsterZone,
-            DeckManager = deckManager,
-            GraveyardZone = graveyardZone
-        };
-        if (!continuousEffect.CanActivate(context)) return;
-
-        continuousEffect.OnActivate(context);
-
-        //TODO spellCard to SpellZone
-        if (SetController.Instance != null)
-        {
-            SetController.Instance.ExecuteSet(spellCard);
-        }
-    }
-
     public void RequestActivate(Card spellCard)
     {
         if (spellCard == null) return;
 
         CardData data = spellCard.GetCardData();
         this.spellCard = spellCard;
-        effect = SpellEffectRegistry.BuildNormal(data);
+        effect = SpellEffectRegistry.Build(data);
 
         if (effect == null)
         {
@@ -93,13 +53,18 @@ public class SpellController : MonoBehaviour
         }
 
         //TODO refactor: In future spellCard required both: NonTarget + Target ??;
-        SpellContext context = new SpellContext
+        SpellContext context = BuildContext(null);
+        if (!effect.CanActivate(context))
         {
-            SpellCard = spellCard,
-            PlayerMonsterZone = playerMonsterZone,
-            DeckManager = deckManager,
-        };
-        if (!effect.CanActivate(context)) return;
+            Debug.LogWarning($"[SpellController] Cannot activate: {data.GetCardName()}");
+            return;
+        }
+
+        if (effect is IContinuousSpellEffect continuousEffect)
+        {
+            ActiveContinuous(continuousEffect, context);
+            return;
+        }
 
         if (effect.NeedsTarget)
         {
@@ -107,13 +72,7 @@ public class SpellController : MonoBehaviour
             return;
         }
 
-        if (effect.SendToGraveyardFirst)
-            SendToGraveyard(spellCard);
-
-        effect.Execute(context);
-
-        if (!effect.SendToGraveyardFirst)
-            SendToGraveyard(spellCard);
+        ExecuteNormal(context);
     }
 
     public void OnFieldCardClickedAsTarget(Card targetCard)
@@ -121,22 +80,70 @@ public class SpellController : MonoBehaviour
         if (spellCard == null || effect == null) return;
         if (targetCard == null) return;
 
-        SpellContext context = new SpellContext
-        {
-            SpellCard = spellCard,
-            TargetMonster = targetCard,
-            PlayerMonsterZone = playerMonsterZone,
-            DeckManager = deckManager,
-            GraveyardZone = graveyardZone
-        };
+        SpellContext context = BuildContext(targetCard);
 
         if (!effect.CanActivate(context))
         {
             Debug.LogWarning($"[SpellController] Invalid target: {targetCard.GetCardData().GetCardName()}");
+            return;
         }
 
         effect.Execute(context);
         SendToGraveyard(spellCard);
+
+        spellCard = null;
+        effect = null;
+        GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+    }
+
+    private void ActiveContinuous(IContinuousSpellEffect continuousEffect, SpellContext context)
+    {
+        int slotIndex = spellZone.FindEmptySlot();
+        Transform targetSlot = spellZone.GetSlotTransform(slotIndex);
+
+        if (targetSlot == null)
+        {
+            Debug.LogWarning("[SpellController] Target transform is null!");
+            spellCard.SetState(CardState.InHand);
+            return;
+        }
+
+        GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
+
+        if (handLayout != null)
+        {
+            handLayout.RemoveCard(spellCard.transform);
+        }
+
+        Card cardToPlace = spellCard;
+
+        CardAnimator.AnimateToSlot(
+            spellCard,
+            targetSlot,
+            setDuration,
+            onComplete: () =>
+            {
+                spellZone.PlaceSpell(cardToPlace, slotIndex);
+                cardToPlace.SetState(CardState.OnField);
+                ContinuousSpellManager.Instance?.Register(cardToPlace, continuousEffect);
+                continuousEffect.Execute(context);
+                GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+            }
+         );
+
+        spellCard = null;
+        effect = null;
+    }
+
+    private void ExecuteNormal(SpellContext context)
+    {
+        if (effect.SendToGraveyardFirst)
+            SendToGraveyard(spellCard);
+
+        effect.Execute(context);
+
+        if (!effect.SendToGraveyardFirst)
+            SendToGraveyard(spellCard);
 
         spellCard = null;
         effect = null;
@@ -170,6 +177,25 @@ public class SpellController : MonoBehaviour
 
         CardSelectionManager.Instance?.DeselectAll();
         CardActionMenu.Instance?.HideMenu();
-        GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+    }
+
+    private SpellContext BuildContext(Card target)
+    {
+        return new SpellContext
+        {
+            SpellCard = spellCard,
+            TargetMonster = target,
+            PlayerMonsterZone = playerMonsterZone,
+            DeckManager = deckManager,
+            GraveyardZone = graveyardZone
+        };
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && IsWaitingForTarget)
+        {
+            CancelTargeting();
+        }
     }
 }

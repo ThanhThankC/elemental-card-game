@@ -2,13 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IContinuousSpellEffect
+public interface IContinuousSpellEffect : ISpellEffect
 {
-    SpellEffectID EffectID { get; }
+    void OnMonsterSummoned(Card monster);
 
-    bool CanActivate(SpellContext context);
-
-    void OnActivate(SpellContext context);
-
-    void OnDeactivate(SpellContext context);
+    void OnDeactivate();
 }

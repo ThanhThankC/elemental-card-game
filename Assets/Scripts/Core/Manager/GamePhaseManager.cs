@@ -7,6 +7,7 @@ public enum GamePhase
     Drawing,
     DiscardSelection,
     Summoning,
+    Setting,
     SpellTargeting,
     Battle,
     End

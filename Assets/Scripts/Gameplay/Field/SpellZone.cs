@@ -32,7 +32,7 @@ public class SpellZone : FieldZone
         return base.RemoveCard(card);
     }
 
-    public bool SetSpellCard(Card card, int slotIndex = -1)
+    public bool PlaceSpell(Card card, int slotIndex = -1)
     {
         if (!CanPlaceCard(card)) return false;
 

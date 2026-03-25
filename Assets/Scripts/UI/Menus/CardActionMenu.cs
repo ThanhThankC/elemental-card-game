@@ -171,7 +171,7 @@ public class CardActionMenu : MonoBehaviour
     private void OnSetClicked()
     {
         if (currentCard == null) return;
-        SpellController.Instance?.RequestSet(currentCard);
+        SpellController.Instance?.RequestActivate(currentCard);
     }
 
     private void OnActivateClicked()
@@ -217,35 +217,28 @@ public class CardActionMenu : MonoBehaviour
             case CardType.Spell:
                 summonButton.gameObject.SetActive(false);
 
-                if (cardData.SpellType == SpellType.Normal)
-                {
-                    setButton.gameObject.SetActive(false);
-                    activateButton.gameObject.SetActive(true);
+                bool isActivate = cardData.SpellType == SpellType.Normal;
 
-                    ISpellEffect effect = SpellEffectRegistry.BuildNormal(cardData);
-                    if (effect == null) { activateButton.interactable = false; break; }
-                    SpellContext context = new SpellContext
-                    {
-                        SpellCard = currentCard,
-                        PlayerMonsterZone = playerMonsterZone,
-                        DeckManager = deckManager,
-                    };
-                    activateButton.interactable = effect.CanActivate(context);
-                }
-                else
-                {
-                    setButton.gameObject.SetActive(true);
-                    activateButton.gameObject.SetActive(false);
+                activateButton.gameObject.SetActive(isActivate);
+                setButton.gameObject.SetActive(!isActivate);
 
-                    IContinuousSpellEffect effect = SpellEffectRegistry.BuildContinous(cardData);
-                    if (effect == null) { setButton.interactable = false; break; }
-                    SpellContext context = new SpellContext
-                    {
-                        SpellCard = currentCard, 
-                        SpellZone = spellZone,
-                    };
-                    setButton.interactable = effect.CanActivate(context);
+                ISpellEffect effect = SpellEffectRegistry.Build(cardData);
+                if (effect == null)
+                {
+                    activateButton.interactable = false;
+                    setButton.interactable = false;
+                    break;
                 }
+                SpellContext context = new SpellContext
+                {
+                    SpellCard = currentCard,
+                    PlayerMonsterZone = playerMonsterZone,
+                    SpellZone = spellZone,
+                    DeckManager = deckManager,
+                };
+
+                activateButton.interactable = effect.CanActivate(context);
+                setButton.interactable = effect.CanActivate(context);
                 break;
 
             case CardType.Trap:
