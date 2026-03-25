@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
+  m_Name: Monster002_BanhXeOmega
+  m_EditorClassIdentifier: 
+  cardID: M_002
+  cardNameVN: "B\xE1nh xe Omega"
+  cardNameEN: Omega BanhXe
+  cardType: 0
+  cardArtwork: {fileID: 21300000, guid: c314a8681807bc44ca33bf622d0b9263, type: 3}
+  stars: 4
+  baseATK: 1100
+  baseDEF: 1200
+  elements: 010000000500000003000000
+  rubyCount: 3
+  lotusCount: 0
+  spellType: 0
+  trapType: 0
+  normalEffectDescVN: 
+  normalEffectDescEN: 
+  specialEffectDescVN: 
+  specialEffectDescEN: 

@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
+  m_Name: Monster008_MaCaRong
+  m_EditorClassIdentifier: 
+  cardID: M_008
+  cardNameVN: "Ma c\xE0 r\u1ED3ng"
+  cardNameEN: Fire Cod
+  cardType: 0
+  cardArtwork: {fileID: 21300000, guid: d7d91d296dd48bf49bc41c213346941b, type: 3}
+  stars: 6
+  baseATK: 1400
+  baseDEF: 1250
+  elements: 0c000000
+  rubyCount: 0
+  lotusCount: 6
+  spellType: 0
+  trapType: 0
+  normalEffectDescVN: "C\xF3 th\u1EC3 \u0111\u1ED5i m\xE1u c\u1EE7a ng\u01B0\u1EDDi
+    ch\u01A1i \u0111\u1EC3 t\u0103ng s\u1EE9c ATK/DEF cho qu\xE1i th\xFA n\xE0y."
+  normalEffectDescEN: 
+  specialEffectDescVN: 
+  specialEffectDescEN: 

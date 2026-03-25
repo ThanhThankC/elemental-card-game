@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
+  m_Name: Spell_VienThuocTangCuong
+  m_EditorClassIdentifier: 
+  cardID: S_04
+  cardNameVN: "B\xF9a h\u1ED9 m\u1EC7nh"
+  cardNameEN: TNT Boom
+  cardType: 1
+  cardArtwork: {fileID: 21300000, guid: db364043487080f4ba881ffb884fe2f7, type: 3}
+  stars: 1
+  baseATK: 0
+  baseDEF: 0
+  elements: 
+  rubyCount: 0
+  lotusCount: 0
+  spellType: 1
+  spellEffectID: 4
+  spellBuffAmount: 1999
+  trapType: 0
+  normalEffectDescVN: "T\u0103ng s\u1EE9c ATK, DEF cho 1 qu\xE1i th\xFA b\u1EA5t
+    k\u1EF3.\nTi\xEAu di\u1EC7t 1 qu\xE1i th\xFA b\u1EA5t k\u1EF3\nT\u0103ng 300
+    ATK cho c\xE1c qu\xE1i th\xFA tr\xEAn s\xE2n."
+  normalEffectDescEN: 
+  specialEffectDescVN: 
+  specialEffectDescEN: 

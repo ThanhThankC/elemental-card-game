@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
+  m_Name: Monster010_BuomThienThan
+  m_EditorClassIdentifier: 
+  cardID: M_010
+  cardNameVN: "Titanian kh\u1ED5ng l\u1ED3"
+  cardNameEN: Fire Cod
+  cardType: 0
+  cardArtwork: {fileID: 21300000, guid: 9a0e18dd3de297c4187b785958133ca0, type: 3}
+  stars: 1
+  baseATK: 100
+  baseDEF: 100
+  elements: 08000000
+  rubyCount: 3
+  lotusCount: 6
+  spellType: 0
+  trapType: 0
+  normalEffectDescVN: "T\u0103ng 100 \u0111i\u1EC3m cho ng\u01B0\u1EDDi ch\u01A1i"
+  normalEffectDescEN: 
+  specialEffectDescVN: "T\u0103ng 200 \u0111i\u1EC3m cho ng\u01B0\u1EDDi ch\u01A1i"
+  specialEffectDescEN: 

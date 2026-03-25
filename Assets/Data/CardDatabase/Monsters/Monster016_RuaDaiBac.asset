@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
+  m_Name: Monster016_RuaDaiBac
+  m_EditorClassIdentifier: 
+  cardID: M_015
+  cardNameVN: "N\xE0ng ti\xEAn c\xE1"
+  cardNameEN: Fire Cod
+  cardType: 0
+  cardArtwork: {fileID: 21300000, guid: 8cacc9c1d6ac5d94cabb9b2ad172ca9c, type: 3}
+  stars: 6
+  baseATK: 100
+  baseDEF: 1600
+  elements: 02000000
+  rubyCount: 2
+  lotusCount: 1
+  spellType: 0
+  trapType: 0
+  normalEffectDescVN: "M\u1ED7i l\u01B0\u1EE3t c\xF3 th\u1EC3 t\u0103ng 100 s\u1EE9c
+    DEF. Khi chuy\u1EC3n sang th\u1EBF ph\xF2ng th\u1EE7 c\xF3 th\u1EC3 ch\u1ECDn
+    t\u1EA5n c\xF4ng tr\u1EF1c ti\u1EBFp v\xE0o \u0111\u1ED1i th\u1EE7"
+  normalEffectDescEN: 
+  specialEffectDescVN: "M\u1ED7i l\u01B0\u1EE3t c\xF3 th\u1EC3 t\u0103ng 150 s\u1EE9c
+    DEF."
+  specialEffectDescEN: 

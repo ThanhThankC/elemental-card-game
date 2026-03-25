@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
+  m_Name: Monster003_QuyCatBungKhongDay
+  m_EditorClassIdentifier: 
+  cardID: M_003
+  cardNameVN: "Qu\u1EF7 c\xE1t b\u1EE5ng kh\xF4ng \u0111\xE1y"
+  cardNameEN: Fire Cod
+  cardType: 0
+  cardArtwork: {fileID: 21300000, guid: 0fe03b64967cd6940ac9742f4b406c68, type: 3}
+  stars: 6
+  baseATK: 1550
+  baseDEF: 1600
+  elements: 06000000
+  rubyCount: 1
+  lotusCount: 4
+  spellType: 0
+  trapType: 0
+  normalEffectDescVN: "K\u1EC3 t\u1EEB l\u01B0\u1EE3t th\u1EE9 3 c\xF3 th\u1EC3 gi\u1EEF
+    1 qu\xE1i th\xFA b\u1EA5t k\u1EF3, l\u01B0\u1EE3t ti\u1EBFp theo m\u1EDBi \u0111\u01B0\u1EE3c
+    th\u1EA3, l\u01B0\u1EE3t ti\u1EBFp theo \u0111\u01B0\u1EE3c h\xFAt."
+  normalEffectDescEN: 
+  specialEffectDescVN: "C\xF3 th\u1EC3 h\xFAt 2 qu\xE1i th\xFA b\u1EA5t k\u1EF3"
+  specialEffectDescEN: 

@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb8e8eda97261364d9798d093715c533, type: 3}
+  m_Name: IconDatabase
+  m_EditorClassIdentifier: 
+  fireIcon: {fileID: 21300000, guid: 8744f197676294d42ae63f6271cbffc2, type: 3}
+  waterIcon: {fileID: 21300000, guid: 0ed03e4dd3b93df4f8bd5e39bf99c68d, type: 3}
+  plantIcon: {fileID: 21300000, guid: fd4abcdf03ddb5b408e6394a7dcc11fd, type: 3}
+  earthIcon: {fileID: 21300000, guid: e9223d4f184c8db4cb31d45005dc00ca, type: 3}
+  windIcon: {fileID: 21300000, guid: 236a16b344472544ea85035bb7de29bb, type: 3}
+  poisonIcon: {fileID: 21300000, guid: 7467e904e2382fd469c11ae28064f84c, type: 3}
+  iceIcon: {fileID: 21300000, guid: 3dacf0e0e829f264980f612445209526, type: 3}
+  metalIcon: {fileID: 21300000, guid: 5ea5152bc7a3c31458fc451f3ce0eb1e, type: 3}
+  thunderIcon: {fileID: 21300000, guid: 4f6f57faa3f86b848af6ce9e4141e75a, type: 3}
+  lightIcon: {fileID: 21300000, guid: 27153c363a1a76d4f87e03be5136d55a, type: 3}
+  darkIcon: {fileID: 21300000, guid: ede046af4b9066e48b9deefffa0706cc, type: 3}
+  soundIcon: {fileID: 21300000, guid: f2972873c16e7f6489f1e8bf8d799d30, type: 3}
+  rubyIcon: {fileID: 21300000, guid: 0e3d7722d5ea8964b853a99d7e3f61fd, type: 3}
+  lotusIcon: {fileID: 21300000, guid: a14f6583cfce9a441bde3135f3f81151, type: 3}

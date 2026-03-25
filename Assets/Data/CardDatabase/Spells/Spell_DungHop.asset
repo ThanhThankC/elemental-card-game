@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
+  m_Name: Spell_DungHop
+  m_EditorClassIdentifier: 
+  cardID: S_01
+  cardNameVN: "Dung h\u1EE3p"
+  cardNameEN: TNT Boom
+  cardType: 1
+  cardArtwork: {fileID: 21300000, guid: 56c45341a6cb59f4c93f11a8eda9ae19, type: 3}
+  stars: 1
+  baseATK: 0
+  baseDEF: 0
+  elements: 
+  rubyCount: 0
+  lotusCount: 0
+  spellType: 0
+  trapType: 0
+  normalEffectDescVN: "C\xF3 th\u1EC3 dung h\u1EE3p 2 qu\xE1i th\xFA b\u1EA5t k\u1EF3."
+  normalEffectDescEN: 
+  specialEffectDescVN: 
+  specialEffectDescEN: 

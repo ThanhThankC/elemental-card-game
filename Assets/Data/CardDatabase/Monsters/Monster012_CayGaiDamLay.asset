@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
+  m_Name: Monster012_CayGaiDamLay
+  m_EditorClassIdentifier: 
+  cardID: M_012
+  cardNameVN: "C\xE2y gai \u0111\u1EA7m l\u1EA7y"
+  cardNameEN: Fire Cod
+  cardType: 0
+  cardArtwork: {fileID: 21300000, guid: c18c0832a6a41324dbef7f8d19cb5253, type: 3}
+  stars: 3
+  baseATK: 800
+  baseDEF: 900
+  elements: 04000000
+  rubyCount: 3
+  lotusCount: 3
+  spellType: 0
+  trapType: 0
+  normalEffectDescVN: "C\xF3 th\u1EC3 tr\xF3i 1 qu\xE1i th\xFA b\u1EA5t k\u1EF3,
+    l\u01B0\u1EE3t sau s\u1EBD gi\u1EA3m 100 s\u1EE9c m\u1EA1nh ATK/DEF c\u1EE7a
+    qu\xE1i th\xFA b\u1ECB tr\xF3i \u0111\xF3."
+  normalEffectDescEN: 
+  specialEffectDescVN: 
+  specialEffectDescEN: 
