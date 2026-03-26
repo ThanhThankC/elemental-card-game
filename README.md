@@ -2,7 +2,7 @@
 
 A Yugioh-inspired turn-based card battle game built with **Unity 2022.3 (C#)**, targeting **Android**. Battle with elemental monsters, cast spells, and set traps across a strategic field system.
 
-> **Work in progress** — approximately 20–30% complete.
+> **Work in progress** — approximately 30-35% complete.
 
 ---
 
@@ -23,8 +23,9 @@ The game features an **elemental system** where monsters can belong to one or mo
 - [x] Summon monsters to the field
 - [x] Tribute system (sacrifice monsters to summon high-tier cards)
 - [x] Send cards to Graveyard
-- [ ] Spell card activation system *(in progress)*
-- [ ] Trap card system
+- [X] Spell card activation system
+- [ ] Card detail panel with extended info display *(in progress)*
+- [ ] Trap card system *(in progress)*
 - [ ] Combat / battle phase
 - [ ] HP damage system
 - [ ] AI opponent
@@ -38,7 +39,7 @@ The game features an **elemental system** where monsters can belong to one or mo
 |------|-------------|
 | **Monster** | Has ATK, DEF, star tier (1–10), element(s), and a special ability |
 | **Spell (P)** | Instant effect; Ps variant can be placed on field; Ps* has priority activation |
-| **Trap (B)** | Activated in response to opponent actions; B* has priority activation |
+| **Trap (B)** | Activated in response to opponent actions|
 | **Special (SS)** | Persistent buff cards that enhance monsters with matching elemental symbols |
 
 ---
@@ -88,7 +89,7 @@ Each player's side of the field contains:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/<your-username>/elemental-card-game.git
+   git clone https://github.com/ThanhThankC/elemental-card-game.git
    ```
 2. Open the project in **Unity Hub** → Add → select the cloned folder
 3. Open the main scene in `Assets/Scenes/`
@@ -108,19 +109,19 @@ Assets/
     │   ├── Manager/         # GamePhaseManager
     │   └── Utils/           # CardAnimator, IconDatabase, ObjectPool
     └── Gameplay/
-        ├── Cards/           # Card, CardHighlighter
+        ├── Cards/           # Card, CardHighlighter, CardFlip
         ├── Deck/            # DeckManager, DiscardManager
         ├── Draw/            # DrawPhaseController, DrawPhaseUI
-        ├── Field/           # FieldSlot, FieldZone, MonsterZone, SpellZone
+        ├── Field/           # FieldSlot, FieldZone, MonsterZone, SpellZone, TrapZone
         ├── Selection/       # CardSelectionManager, SelectionContext, SelectionValidator
-        ├── Set/
         ├── Spells/
-        │   ├── Effects/     # BuaHoMenh, BuffATKDEF, DestroyMonster, DrawCard effects
+        │   ├── Effects/     # BuaHoMenhEffect, BuffATKDEF, DestroyMonster, DrawCardEfects
         │   ├── IContinuousSpellEffect, ISpellEffect
-        │   └── SpellContext, SpellController, SpellEffectRegistry
+        │   └── SpellContext, SpellController, SpellEffectRegistry, ContinuousSpellManager
         ├── Summon/          # SummonController
+        ├── Trap/            # TrapController
         └── UI/
-            ├── HUD/         # FieldHighlightController, SpellTargetingUI
+            ├── HUD/         # FieldHighlightController, SpellTargetingUI, CardDetailPanel
             ├── Interactions/ # CardClickHandler, CardDragHandler, CardTransformHelper
             ├── Layouts/     # HandLayoutManager
             └── Menus/       # CardActionMenu
@@ -130,7 +131,7 @@ Assets/
 
 ## Roadmap
 
-- [ ] Complete spell card system
+- [ ] Implement Card detail panel
 - [ ] Implement trap card system
 - [ ] Build combat / battle phase
 - [ ] Add AI opponent
