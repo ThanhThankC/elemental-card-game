@@ -39,7 +39,6 @@ public class Card : MonoBehaviour
 
     [Header("Description")]
     [SerializeField] private TextMeshProUGUI normalDescText;
-
     [SerializeField] private GameObject specialDescPanel;
     [SerializeField] private TextMeshProUGUI specialDescText;
 
@@ -47,6 +46,7 @@ public class Card : MonoBehaviour
     [SerializeField] private Image cardBackground;
     [SerializeField] private Color monsterColor = Color.yellow;
     [SerializeField] private Color spellColor = Color.green;
+    [SerializeField] private Color trapCollor = Color.magenta;
 
     public event Action OnStatsChanged;
 
@@ -121,6 +121,9 @@ public class Card : MonoBehaviour
                 break;
             case CardType.Spell:
                 cardBackground.color = spellColor;
+                break;
+            case CardType.Trap:
+                cardBackground.color = trapCollor;
                 break;
         }
     }

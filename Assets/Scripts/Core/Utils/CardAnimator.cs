@@ -17,6 +17,22 @@ public static class CardAnimator
         seq.OnKill(() => onKill?.Invoke());
     }
 
+    public static void AnimateToSlotFaceDown(Card card, Transform targetSlot, float duration, System.Action onComplete = null)
+    {
+        Vector3 scale = CardVisualConfig.GetRestingScale(CardState.OnField);
+
+        Sequence seq = DOTween.Sequence();
+        seq.Append(card.transform.DOMove(targetSlot.position, duration).SetEase(Ease.OutCubic));
+        seq.Join(card.transform.DOLocalRotateQuaternion(Quaternion.identity, duration).SetEase(Ease.OutCubic));
+        seq.Join(card.transform.DOScaleY(scale.y, duration));
+        DOVirtual.DelayedCall(duration * 0.5f, () =>
+        {
+            card.GetComponent<CardFlip>().Flip(scale.x);
+        });
+        
+        seq.OnComplete(() => onComplete?.Invoke());
+    }
+
     public static void AnimateToGraveyard(Transform card, Transform graveyard, float duration = 0.5f, System.Action onComplete = null)
     {
         if (card == null || graveyard == null) return;
