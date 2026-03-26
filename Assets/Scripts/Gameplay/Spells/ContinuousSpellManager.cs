@@ -14,16 +14,14 @@ public class ContinuousSpellManager : MonoBehaviour
         {
             if (instance == null)
             {
-                if (instance == null)
-                {
-                    instance = FindObjectOfType<ContinuousSpellManager>();
-                }
+                instance = FindObjectOfType<ContinuousSpellManager>();
             }
             return instance;
         }
     }
 
-    public Dictionary<Card, IContinuousSpellEffect> activeEffects = new Dictionary<Card, IContinuousSpellEffect>();
+    private Dictionary<Card, IContinuousSpellEffect> activeEffects = new Dictionary<Card, IContinuousSpellEffect>();
+    private SummonController summonController;
 
     private void Awake()
     {
@@ -37,17 +35,18 @@ public class ContinuousSpellManager : MonoBehaviour
 
     private void Start()
     {
-        if (SummonController.Instance != null)
+        summonController = SummonController.Instance;
+        if (summonController != null)
         {
-            SummonController.Instance.OnMonsterSummoned += OnMonsterSummoned;
+            summonController.OnMonsterSummoned += OnMonsterSummoned;
         }
     }
 
     private void OnDestroy()
     {
-        if (SummonController.Instance != null)
+        if (summonController != null)
         {
-            SummonController.Instance.OnMonsterSummoned -= OnMonsterSummoned;
+            summonController.OnMonsterSummoned -= OnMonsterSummoned;
         }
     }
 
