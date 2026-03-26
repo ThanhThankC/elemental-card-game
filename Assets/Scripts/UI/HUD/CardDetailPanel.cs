@@ -7,7 +7,6 @@ public class CardDetailPanel : MonoBehaviour
 {
     [Header("Panel")]
     [SerializeField] private RectTransform panelRect;
-    [SerializeField] private float panelWidth = 300f;
     [SerializeField] private float animDuration = 0.3f;
     [SerializeField] private Ease animEase = Ease.OutCubic;
 
