@@ -124,6 +124,15 @@ public class CardSelectionManager : MonoBehaviour
     {
         if (GamePhaseManager.Instance.IsInDiscardPhase()) return;
 
+        if (context.CurrentFieldCard?.GetCardData().Type == CardType.Trap)
+        {
+            CardActionMenu.Instance?.HideMenu();
+        }
+        if (card.GetCardData().Type == CardType.Trap)
+        {
+            CardActionMenu.Instance?.ShowMenu(card);
+        }
+
         if (!context.HasHandCard())
         {
             if (context.HasSacrifices())
@@ -178,6 +187,12 @@ public class CardSelectionManager : MonoBehaviour
 
     private void HandleDeselectOnField(Card card)
     {
+        if (card.GetCardData().Type == CardType.Trap)
+        {
+            CardActionMenu.Instance?.HideMenu();
+            return;
+        }
+
         if (!context.HasHandCard()) return;
 
         context.RemoveSacrifice(card);

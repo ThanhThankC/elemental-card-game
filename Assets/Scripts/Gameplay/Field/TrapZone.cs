@@ -1,20 +1,22 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class SpellZone : FieldZone
+public class TrapZone : FieldZone
 {
     public override bool CanPlaceCard(Card card)
     {
         if (card == null) return false;
 
-        if (card.GetCardData().Type != CardType.Spell || card.GetCardData().SpellType != SpellType.Continuous)
+        if (card.GetCardData().Type != CardType.Trap)
         {
-            Debug.LogWarning($"[SpellZone] Only continuous spell card allowed!");
+            Debug.LogWarning($"[TrapZone] Only trap cards allowed!");
             return false;
         }
 
         if (!HasEmptySlot())
         {
-            Debug.LogWarning($"[SpellZone] Not space left!");
+            Debug.LogWarning($"[TrapZone] Not space left!");
             return false;
         }
 
@@ -23,16 +25,10 @@ public class SpellZone : FieldZone
 
     public override CardType GetAllowedCardType()
     {
-        return CardType.Spell;
+        return CardType.Trap;
     }
 
-    public override bool RemoveCard(Card card)
-    {
-        //TODO 
-        return base.RemoveCard(card);
-    }
-
-    public bool PlaceSpell(Card card, int slotIndex = -1)
+    public bool PlaceTrap(Card card, int slotIndex = -1)
     {
         if (!CanPlaceCard(card)) return false;
 
@@ -43,7 +39,7 @@ public class SpellZone : FieldZone
 
         if (slotIndex == -1)
         {
-            Debug.LogWarning($"[SpellZone] Not space left!");
+            Debug.LogWarning($"[TrapZone] Not space left!");
             return false;
         }
 
@@ -51,7 +47,7 @@ public class SpellZone : FieldZone
 
         if (success)
         {
-            Debug.Log($"[SpellZone] Placed {card.GetCardData().GetCardName()} to slot {slotIndex}");
+            Debug.Log($"[TrapZone] Placed {card.GetCardData().GetCardName()} face-down to slot {slotIndex}");
         }
 
         return success;

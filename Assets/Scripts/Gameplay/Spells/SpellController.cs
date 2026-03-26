@@ -42,6 +42,9 @@ public class SpellController : MonoBehaviour
     {
         if (spellCard == null) return;
 
+        CardSelectionManager.Instance?.DeselectAll();
+        CardActionMenu.Instance?.HideMenu();
+
         CardData data = spellCard.GetCardData();
         this.spellCard = spellCard;
         effect = SpellEffectRegistry.Build(data);
@@ -110,7 +113,6 @@ public class SpellController : MonoBehaviour
 
         GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
         CardSelectionManager.Instance?.DeselectAll();
-        CardActionMenu.Instance?.HideMenu();
 
         if (handLayout != null)
         {
@@ -165,8 +167,6 @@ public class SpellController : MonoBehaviour
 
     private void EnterTargetingMode()
     {
-        //CardActionMenu.Instance?.HideMenu();
-        CardSelectionManager.Instance?.DeselectAll();
         GamePhaseManager.Instance.SetPhase(GamePhase.SpellTargeting);
     }
 
@@ -178,9 +178,6 @@ public class SpellController : MonoBehaviour
         spellCard.transform.position = graveyardZone.position;
         spellCard.gameObject.SetActive(false);
         CardSelectionManager.Instance?.NotifyCardSentToGraveyard(spellCard);
-
-        CardSelectionManager.Instance?.DeselectAll();
-        CardActionMenu.Instance?.HideMenu();
     }
 
     private SpellContext BuildContext(Card target)
