@@ -109,6 +109,8 @@ public class SpellController : MonoBehaviour
         }
 
         GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
+        CardSelectionManager.Instance?.DeselectAll();
+        CardActionMenu.Instance?.HideMenu();
 
         if (handLayout != null)
         {
@@ -171,9 +173,11 @@ public class SpellController : MonoBehaviour
     private void SendToGraveyard(Card spellCard)
     {
         handLayout.RemoveCard(spellCard.transform);
+        //TODO: Add disappear effect
         spellCard.SetState(CardState.InGraveyard);
         spellCard.transform.position = graveyardZone.position;
         spellCard.gameObject.SetActive(false);
+        CardSelectionManager.Instance?.NotifyCardSentToGraveyard(spellCard);
 
         CardSelectionManager.Instance?.DeselectAll();
         CardActionMenu.Instance?.HideMenu();

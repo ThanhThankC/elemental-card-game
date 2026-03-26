@@ -37,9 +37,6 @@ public class BuaHoMenhEffect : IContinuousSpellEffect
         Debug.Log($"[BuffATKDEF] {monster.GetCardData().GetCardName()} + {buffAmount} ATK/DEF");
     }
 
-    public void OnDeactivate()
-    {
-
-    }
+    public void OnDeactivate() { }
 
 }

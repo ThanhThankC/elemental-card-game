@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using System;
 
 public class Card : MonoBehaviour
 {
@@ -46,7 +47,9 @@ public class Card : MonoBehaviour
     [SerializeField] private Image cardBackground;
     [SerializeField] private Color monsterColor = Color.yellow;
     [SerializeField] private Color spellColor = Color.green;
-   
+
+    public event Action OnStatsChanged;
+
     private int currentATK;
     private int currentDEF;
     private bool isVietnamese = true;
@@ -86,14 +89,11 @@ public class Card : MonoBehaviour
             UpdateElementIcons();
             UpdateBuffPanel();
         }
-        else
-        {
-            SetGroupVisibility(combatStats, false);
-            SetGroupVisibility(attributeGroup, false);
-            SetGroupVisibility(specialDescPanel, false);
-        }
 
-            UpdateDescription();
+        SetGroupVisibility(combatStats, isMonster);
+        SetGroupVisibility(attributeGroup, isMonster);
+        SetGroupVisibility(specialDescPanel, isMonster);
+        UpdateDescription();
     }
 
     private void UpdateBasicInfo()
@@ -248,6 +248,7 @@ public class Card : MonoBehaviour
     {
         currentATK += amount;
         UpdateCombatStats();
+        OnStatsChanged?.Invoke();
     }
 
     public void ModifyDEF(int amount)
@@ -255,6 +256,18 @@ public class Card : MonoBehaviour
         currentDEF += amount;
         if (currentDEF < 0) currentDEF = 0;
         UpdateCombatStats();
+        OnStatsChanged?.Invoke();
+    }
+
+    public void CopyStatsFrom(Card source)
+    {
+        Initialize(source.GetCardData());
+
+        int diffATK = source.GetCurrentATK() - source.GetCardData().BaseATK;
+        int diffDEF = source.GetCurrentDEF() - source.GetCardData().BaseDEF;
+
+        if (diffATK != 0) ModifyATK(diffATK);
+        if (diffDEF != 0) ModifyDEF(diffDEF);
     }
 
     public void ApplySpecialCardBuff()
@@ -281,7 +294,6 @@ public class Card : MonoBehaviour
             UpdateCombatStats();
         }
     }
-
 
     public CardData GetCardData() => cardData;
     public int GetCurrentATK() => currentATK;

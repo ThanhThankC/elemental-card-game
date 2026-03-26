@@ -100,7 +100,6 @@ public class SelectionContext
     public bool HasSacrifices() => selectedSacrifices.Count > 0;
 
 
-    //New
     //Discard Mode
 
     private List<Card> selectedDiscardCards = new List<Card>();
@@ -128,4 +127,14 @@ public class SelectionContext
 
     public int SelectedDiscardCount => selectedDiscardCards.Count;
     public IReadOnlyList<Card> SelectedDiscards => selectedDiscardCards.AsReadOnly();
+
+
+    //Focus Mode
+    private Card focusedCard;
+    public Card FocusedCard => focusedCard;
+
+    public void SetFocusedCard(Card card)
+    {
+        focusedCard = card;
+    }
 }

@@ -21,6 +21,8 @@ public class DestroyMonsterEffect : ISpellEffect
         Card target = context.TargetMonster;
         context.PlayerMonsterZone.RemoveCard(context.TargetMonster);
 
+        CardSelectionManager.Instance?.NotifyCardSentToGraveyard(target);
+
         CardAnimator.AnimateToGraveyard(
             target.transform,
             context.GraveyardZone,

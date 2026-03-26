@@ -15,6 +15,8 @@ public enum GamePhase
 
 public class GamePhaseManager : MonoBehaviour
 {
+    public event Action<GamePhase> OnPhaseChanged;
+
     private static GamePhaseManager instance;
     public static GamePhaseManager Instance
     {
@@ -31,8 +33,6 @@ public class GamePhaseManager : MonoBehaviour
     }
 
     private GamePhase currentPhase = GamePhase.Idle;
-
-    public event Action<GamePhase> OnPhaseChanged;
 
     public void SetPhase(GamePhase newState)
     {

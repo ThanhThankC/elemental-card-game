@@ -152,6 +152,7 @@ public class SummonController : MonoBehaviour
             }
 
             sacrifice.SetState(CardState.Discarding);
+            CardSelectionManager.Instance?.NotifyCardSentToGraveyard(sacrifice);
 
             CardAnimator.AnimateToGraveyard(
                 sacrifice.transform,

@@ -1,5 +1,5 @@
+using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 /// <summary>
@@ -7,6 +7,9 @@ using UnityEngine;
 /// </summary>
 public class CardSelectionManager : MonoBehaviour
 {
+    public event Action<Card> OnCardFocused;
+    public event Action OnCardUnfocused;
+
     private static CardSelectionManager instance;
 
     public static CardSelectionManager Instance
@@ -48,6 +51,9 @@ public class CardSelectionManager : MonoBehaviour
             HandleSelectInHand(card, clickHandler);
         else if (card.GetState() == CardState.OnField)
             HandleSelectOnField(card, clickHandler);
+
+        OnCardFocused?.Invoke(card);
+        context.SetFocusedCard(card);
     }
 
     public void OnCardDeselected(Card card)
@@ -60,7 +66,16 @@ public class CardSelectionManager : MonoBehaviour
             HandleDeselectOnField(card);
     }
 
-    //New
+    public void NotifyCardSentToGraveyard(Card card)
+    {
+        if (card == null) return;
+
+        if (context.FocusedCard == card)
+        {
+            OnCardUnfocused?.Invoke();
+        }
+    }
+
     private void HandleSelectInHand(Card card, CardClickHandler clickHandler)
     {
         if (GamePhaseManager.Instance.IsInDiscardPhase())
@@ -105,7 +120,6 @@ public class CardSelectionManager : MonoBehaviour
         CardActionMenu.Instance?.ShowMenu(card);
     }
 
-    //New
     private void HandleSelectOnField(Card card, CardClickHandler clickHandler)
     {
         if (GamePhaseManager.Instance.IsInDiscardPhase()) return;
@@ -142,7 +156,6 @@ public class CardSelectionManager : MonoBehaviour
         UpdateSacrificeButton();
     }
 
-    //New
     private void HandleDeselectInHand(Card card)
     {
         if (GamePhaseManager.Instance.IsInDiscardPhase())
@@ -209,7 +222,6 @@ public class CardSelectionManager : MonoBehaviour
         }
     }
 
-    //New
     public void ClearDiscardVisuals()
     {
         foreach (Card discard in context.SelectedDiscards)
@@ -222,7 +234,6 @@ public class CardSelectionManager : MonoBehaviour
         }
     }
 
-    //New
     private void UpdateSacrificeButton()
     {
         CardActionMenu.Instance?.UpdateSacrificeButton(
@@ -231,8 +242,6 @@ public class CardSelectionManager : MonoBehaviour
         );
     }
 
-
-    //New
     public void ClearAllDiscard()
     {
         context.ClearDiscards(); 
@@ -243,7 +252,6 @@ public class CardSelectionManager : MonoBehaviour
     public IReadOnlyList<Card> SelectedSacrifices => context.SelectedSacrifices;
     public void ClearCurrentHandCard() => context.ClearHandCard();
     public bool IsSacrificeComplete() => context.IsSacrificeComplete();
-    //New
     public int GetSelectedDiscardCount() => context.SelectedDiscardCount;
     public IReadOnlyList<Card> SelectedDiscards => context.SelectedDiscards;
 }

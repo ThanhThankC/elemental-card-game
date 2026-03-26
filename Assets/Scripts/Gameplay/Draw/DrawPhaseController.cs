@@ -65,6 +65,7 @@ public class DrawPhaseController : MonoBehaviour
             if (card != null)
             {
                 handLayout.RemoveCard(card.transform);
+                CardSelectionManager.Instance?.NotifyCardSentToGraveyard(card);
 
                 CardAnimator.AnimateToGraveyard(
                     card.transform,
