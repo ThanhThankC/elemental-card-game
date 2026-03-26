@@ -21,8 +21,8 @@ public static class CardVisualConfig
     public static float FieldScale => 0.8f * GlobalScaleUnit;
     public static float GraveyardScale => 0.6f * GlobalScaleUnit;
 
-    public static float HandSelectedMultiplier => 1.4f * GlobalSelectedMultiplier;
-    public static float FieldSelectedMultiplier => 1.5f * GlobalSelectedMultiplier;
+    public static float HandSelectedMultiplier => 1.2f * GlobalSelectedMultiplier;
+    public static float FieldSelectedMultiplier => 1.3f * GlobalSelectedMultiplier;
 
     /// <summary>
     /// Get resting scale for a card state.
