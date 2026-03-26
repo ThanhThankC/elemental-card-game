@@ -168,16 +168,26 @@ public class CardActionMenu : MonoBehaviour
         }
     }
 
-    private void OnSetClicked()
-    {
-        if (currentCard == null) return;
-        SpellController.Instance?.RequestActivate(currentCard);
-    }
+    private void OnSetClicked() => RequestAction();
 
-    private void OnActivateClicked()
+    private void OnActivateClicked() => RequestAction();
+
+    private void RequestAction()
     {
         if (currentCard == null) return;
-        SpellController.Instance?.RequestActivate(currentCard);
+
+        switch (currentCard.GetCardData().Type)
+        {
+            case CardType.Spell:
+                SpellController.Instance?.RequestActivate(currentCard);
+                break;
+            case CardType.Trap:
+                TrapController.Instance?.RequestSet(currentCard);
+                break;
+            case CardType.Special:
+                // TODO
+                break;
+        }
     }
 
     private void OnCancelClicked()
@@ -221,30 +231,14 @@ public class CardActionMenu : MonoBehaviour
 
                 activateButton.gameObject.SetActive(isActivate);
                 setButton.gameObject.SetActive(!isActivate);
-
-                ISpellEffect effect = SpellEffectRegistry.Build(cardData);
-                if (effect == null)
-                {
-                    activateButton.interactable = false;
-                    setButton.interactable = false;
-                    break;
-                }
-                SpellContext context = new SpellContext
-                {
-                    SpellCard = currentCard,
-                    PlayerMonsterZone = playerMonsterZone,
-                    SpellZone = spellZone,
-                    DeckManager = deckManager,
-                };
-
-                activateButton.interactable = effect.CanActivate(context);
-                setButton.interactable = effect.CanActivate(context);
                 break;
 
             case CardType.Trap:
                 summonButton.gameObject.SetActive(false);
-                setButton.gameObject.SetActive(true);
-                activateButton.gameObject.SetActive(false);
+
+                bool isSet = currentCard.GetState() == CardState.InHand;
+                setButton.gameObject.SetActive(isSet);
+                activateButton.gameObject.SetActive(!isSet);
                 break;
 
             case CardType.Special:
