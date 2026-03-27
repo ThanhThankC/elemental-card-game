@@ -13,6 +13,7 @@ public class TrapController : MonoBehaviour
 
     [Header("Animation")]
     [SerializeField] private float setDuration = 0.4f;
+    [SerializeField] private float flipDuration = 0.4f;
 
     private static TrapController instance;
     public static TrapController Instance
@@ -44,7 +45,7 @@ public class TrapController : MonoBehaviour
 
         if (trapCard.GetCardData().Type != CardType.Trap)
         {
-            Debug.LogWarning($"[TrapController] ...");
+            Debug.LogWarning($"[TrapController] Only trap cards allowed");
             return;
         }
 
@@ -58,6 +59,39 @@ public class TrapController : MonoBehaviour
         }
     }
 
+    public void RequestRecall(Card trapCard)
+    {
+        if (trapCard == null) return;
+
+
+        CardSelectionManager.Instance?.DeselectAll();
+        CardActionMenu.Instance?.HideMenu();
+
+        if (trapCard.GetCardData().Type != CardType.Trap)
+        {
+            Debug.LogWarning($"[TrapController] Only trap cards allowed");
+            return;
+        }
+
+        //if (handLayout.)
+        GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
+
+        Card cardToPlace = trapCard;
+
+        CardAnimator.AnimateToHand(
+            cardToPlace,
+            setDuration,
+            flipDuration,
+            onComplete: () =>
+            {
+                handLayout.AddCard(cardToPlace.transform);
+                trapZone.RemoveCard(cardToPlace);
+                cardToPlace.SetState(CardState.InHand);
+                GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+            }
+        );
+    }
+
     private void SetTrapCard(Card trapCard)
     {
         int slotIndex = trapZone.FindEmptySlot();
@@ -65,7 +99,7 @@ public class TrapController : MonoBehaviour
 
         if (targetSlot == null)
         {
-            Debug.LogWarning("[SpellController] Target transform is null!");
+            Debug.LogWarning("[TrapController] Target transform is null!");
             trapCard.SetState(CardState.InHand);
             return;
         }
@@ -80,10 +114,11 @@ public class TrapController : MonoBehaviour
 
         Card cardToPlace = trapCard;
 
-        CardAnimator.AnimateToSlotFaceDown(
+        CardAnimator.AnimateToField(
             cardToPlace,
             targetSlot,
             setDuration,
+            flipDuration,
             onComplete: () =>
             {
                 trapZone.PlaceTrap(cardToPlace, slotIndex);

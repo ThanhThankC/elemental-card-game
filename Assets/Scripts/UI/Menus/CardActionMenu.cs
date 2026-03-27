@@ -10,10 +10,11 @@ public class CardActionMenu : MonoBehaviour
 {
     [Header("UI References")]
     [SerializeField] private GameObject menuPanel;
-    [SerializeField] private Button summonButton; // Summon Monster
+    [SerializeField] private Button summonButton;
     [SerializeField] private TextMeshProUGUI summonButtonText;
-    [SerializeField] private Button setButton; // Set Spell or Trap or Special
-    [SerializeField] private Button activateButton; // Activate Spell
+    [SerializeField] private Button setButton;
+    [SerializeField] private Button activateButton;
+    [SerializeField] private Button recallButton;
     [SerializeField] private Button cancelButton;
 
     [Header("Localization Text")]
@@ -86,6 +87,9 @@ public class CardActionMenu : MonoBehaviour
 
         if (activateButton != null)
             activateButton.onClick.AddListener(OnActivateClicked);
+
+        if (recallButton != null)
+            recallButton.onClick.AddListener(OnRecallClicked);
 
         if (cancelButton != null)
             cancelButton.onClick.AddListener(OnCancelClicked);
@@ -190,6 +194,11 @@ public class CardActionMenu : MonoBehaviour
         }
     }
 
+    public void OnRecallClicked()
+    {
+        TrapController.Instance?.RequestRecall(currentCard);
+    }
+
     private void OnCancelClicked()
     {
         CardSelectionManager.Instance?.DeselectAll();
@@ -222,6 +231,7 @@ public class CardActionMenu : MonoBehaviour
                 summonButton.gameObject.SetActive(true);
                 setButton.gameObject.SetActive(false);
                 activateButton.gameObject.SetActive(false);
+                recallButton.gameObject.SetActive(false);
                 break;
 
             case CardType.Spell:
@@ -231,6 +241,7 @@ public class CardActionMenu : MonoBehaviour
 
                 activateButton.gameObject.SetActive(isActivate);
                 setButton.gameObject.SetActive(!isActivate);
+                recallButton.gameObject.SetActive(false);
                 break;
 
             case CardType.Trap:
@@ -239,12 +250,14 @@ public class CardActionMenu : MonoBehaviour
                 bool isSet = currentCard.GetState() == CardState.InHand;
                 setButton.gameObject.SetActive(isSet);
                 activateButton.gameObject.SetActive(!isSet);
+                recallButton.gameObject.SetActive(!isSet);
                 break;
 
             case CardType.Special:
                 summonButton.gameObject.SetActive(false);
                 setButton.gameObject.SetActive(true);
                 activateButton.gameObject.SetActive(false);
+                recallButton.gameObject.SetActive(false);
                 break;
         }
     }
