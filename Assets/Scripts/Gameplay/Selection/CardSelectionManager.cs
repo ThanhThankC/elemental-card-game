@@ -124,17 +124,22 @@ public class CardSelectionManager : MonoBehaviour
     {
         if (GamePhaseManager.Instance.IsInDiscardPhase()) return;
 
-        if (context.CurrentFieldCard?.GetCardData().Type == CardType.Trap)
-        {
-            CardActionMenu.Instance?.HideMenu();
-        }
-        if (card.GetCardData().Type == CardType.Trap)
-        {
-            CardActionMenu.Instance?.ShowMenu(card);
-        }
+        if (card.GetCardData().Type == CardType.Monster)
+            HandleSelectMonsterOnField(card, clickHandler);
+        else
+            HandleSelectNonMonsterOnField(card, clickHandler);
+    }
 
+    private void HandleSelectMonsterOnField(Card card, CardClickHandler clickHandler)
+    {
         if (!context.HasHandCard())
         {
+            if (context.CurrentFieldCard?.GetCardData().Type != CardType.Monster)
+            {
+                CardActionMenu.Instance?.HideMenu();
+                DeselectFieldCardVisual();
+            }
+
             if (context.HasSacrifices())
             {
                 ClearSacrificeVisuals();
@@ -163,6 +168,29 @@ public class CardSelectionManager : MonoBehaviour
 
         context.AddSacrifice(card);
         UpdateSacrificeButton();
+    }
+
+    private void HandleSelectNonMonsterOnField(Card card, CardClickHandler clickHandler)
+    {
+        if (context.HasHandCard())
+        {
+            DeselectHandCardVisual();
+            context.ClearHandCard();
+        }
+        if (context.HasSacrifices())
+        {
+            ClearSacrificeVisuals();
+            context.ClearSacrifices();
+        }
+        if (context.HasFieldCard() && context.CurrentFieldCardHandler != clickHandler)
+            DeselectFieldCardVisual();
+
+        if (card.GetCardData().Type == CardType.Trap)
+            CardActionMenu.Instance?.ShowMenu(card);
+        else
+            CardActionMenu.Instance?.HideMenu();
+
+        context.SetFieldCard(card, clickHandler);
     }
 
     private void HandleDeselectInHand(Card card)
