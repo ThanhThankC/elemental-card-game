@@ -22,12 +22,32 @@ public class CardFlip : MonoBehaviour
         cardBack.SetActive(false);
     }
 
-    public void Flip(float targetXScale)
+    /// <summary>
+    /// Flip the card to face up if it's currently face down.
+    /// </summary>
+    public void FlipToFaceUp(float targetXScale, float duration = -1)
+    {
+        if (isFaceUp) return;
+        Flip(targetXScale, duration);
+    }
+
+    /// <summary>
+    /// Flip the card to face down if it's currently face up.
+    /// </summary>
+    public void FlipToFaceDown(float targetXScale, float duration = -1)
+    {
+        if (!isFaceUp) return;
+        Flip(targetXScale, duration);
+    }
+
+    private void Flip(float targetXScale, float duration = -1)
     {
         if (isFlipping) return;
         isFlipping = true;
 
-        rectTransform.DOScaleX(0f, flipDuration / 2f)
+        float actualDuration = duration <= 0 ? this.flipDuration : duration;
+
+        transform.DOScaleX(0f, actualDuration / 2f)
             .SetEase(flipEase)
             .OnComplete(() =>
             {
@@ -35,12 +55,9 @@ public class CardFlip : MonoBehaviour
                 cardFront.SetActive(isFaceUp);
                 cardBack.SetActive(!isFaceUp);
 
-                rectTransform.DOScaleX(targetXScale, flipDuration / 2f)
+                transform.DOScaleX(targetXScale, actualDuration / 2f)
                     .SetEase(flipEase)
-                    .OnComplete(() =>
-                    {
-                        isFlipping = false;
-                    });
+                    .OnComplete(() => isFlipping = false); 
             });
     }
 
