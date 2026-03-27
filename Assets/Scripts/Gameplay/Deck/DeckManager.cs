@@ -73,7 +73,7 @@ public class DeckManager : MonoBehaviour
         {
             GameObject poolObj = new GameObject("CardPool");
             poolParent = poolObj.transform;
-            poolParent.SetParent(deckZone);
+            //poolParent.SetParent(deckZone);
             poolParent.localScale = Vector3.one;
         }
 
@@ -162,7 +162,6 @@ public class DeckManager : MonoBehaviour
     {
         if (deck.Count == 0 || handLayout.GetCardCount() >= maxHandSize) return;
 
-        //Deselect all cards before drawing.
         CardSelectionManager.Instance?.DeselectAll();
 
         CardData cardData = deck[0];
@@ -186,26 +185,29 @@ public class DeckManager : MonoBehaviour
         {
             card.Initialize(cardData);
             card.SetState(CardState.Drawing);
+            card.transform.SetParent(deckZone);
+
         }
-        AnimateCardDraw(card.transform);
+        AnimateCardDraw(card);
     }
 
-    private void AnimateCardDraw(Transform card)
+    private void AnimateCardDraw(Card card)
     {
-        Vector3 startWorldPos = deckZone.position;
+        card.transform.localScale = CardVisualConfig.GetRestingScale(CardState.InDeck);
 
-        Quaternion targetLocalRot = card.localRotation;
+        //Sequence drawSeq = DOTween.Sequence();
+        //drawSeq.Append(card.DOScale(CardVisualConfig.GetRestingScale(CardState.InHand), drawDuration).SetEase(drawEase));
+        //drawSeq.OnComplete(() => { handLayout.AddCard(card); });
 
-        card.position = startWorldPos;
-        card.localRotation = Quaternion.identity;
-        card.localScale = CardVisualConfig.GetRestingScale(CardState.InDeck);
-
-        Sequence drawSeq = DOTween.Sequence();
-
-        drawSeq.Join(card.DOLocalRotateQuaternion(targetLocalRot, drawDuration).SetEase(drawEase));
-        drawSeq.Join(card.DOScale(CardVisualConfig.GetRestingScale(CardState.InHand), drawDuration).SetEase(drawEase));
-
-        drawSeq.OnComplete(() => { handLayout.AddCard(card); });
+        CardAnimator.AnimateToHand(
+            card,
+            drawDuration,
+            onComplete: () =>
+            {
+                handLayout.AddCard(card.transform);
+                GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+            }
+        );
     }
 
     private int GetDrawableCount()
@@ -262,7 +264,6 @@ public class DeckManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    //New
     public void OnDrawCard()
     {
         StartCoroutine(DrawCards(2));

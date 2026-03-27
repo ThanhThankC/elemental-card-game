@@ -121,7 +121,7 @@ public class SpellController : MonoBehaviour
 
         Card cardToPlace = spellCard;
 
-        CardAnimator.AnimateToSlot(
+        CardAnimator.AnimateToField(
             spellCard,
             targetSlot,
             setDuration,

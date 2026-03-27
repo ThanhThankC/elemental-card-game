@@ -186,7 +186,7 @@ public class SummonController : MonoBehaviour
 
         bool isCompleted = false;
 
-        CardAnimator.AnimateToSlot(
+        CardAnimator.AnimateToField(
             monster,
             targetSlot,
             summonDuration,
