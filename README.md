@@ -17,14 +17,11 @@ The game features an **elemental system** where monsters can belong to one or mo
 ## Current Features
 
 - [x] Card creation & data system (Monster, Spell, Trap, Special cards)
-- [x] Card dealing — draw cards into hand at game start
-- [x] Hand layout & card sorting
-- [x] Card selection from hand
+- [x] Card dealing & hand management
 - [x] Summon monsters to the field
 - [x] Tribute system (sacrifice monsters to summon high-tier cards)
 - [x] Send cards to Graveyard
-- [X] Spell card activation system
-- [ ] Card detail panel with extended info display *(in progress)*
+- [x] Spell card activation system
 - [ ] Trap card system *(in progress)*
 - [ ] Combat / battle phase
 - [ ] HP damage system
@@ -131,12 +128,11 @@ Assets/
 
 ## Roadmap
 
-- [ ] Implement Card detail panel
-- [ ] Implement trap card system
-- [ ] Build combat / battle phase
-- [ ] Add AI opponent
-- [ ] Online multiplayer support
-- [ ] Card collection & deck builder UI
+- [ ] Trap card system
+- [ ] Combat / battle phase
+- [ ] HP damage system
+- [ ] AI opponent
+- [ ] Online multiplayer
 
 ---
 
