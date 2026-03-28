@@ -121,7 +121,6 @@ public class HandLayoutManager : MonoBehaviour
         int index = cards.IndexOf(card);
         if (index == -1)
         {
-            //Debug.LogWarning($"[HandLayout] Card {card.GetComponent<Card>().GetCardData()} not found in hand!");
             return card.localPosition;
         }
         return CalculatePosition(index);
@@ -135,7 +134,6 @@ public class HandLayoutManager : MonoBehaviour
         int index = cards.IndexOf(card);
         if (index == -1)
         {
-            //Debug.LogWarning($"[HandLayout] Card {card.GetComponent<Card>().GetCardData()} not found in hand!");
             return Quaternion.identity;
         }
 
@@ -174,6 +172,7 @@ public class HandLayoutManager : MonoBehaviour
         return Quaternion.Euler(0, 0, angle);
     }
 
+    public bool HasEmptySlot() => cards.Count < GameRules.MAX_HAND_SIZE;
     public int GetCardCount() => cards.Count;
     public void Clear() => cards.Clear();
     public bool Contains(Transform card) => cards.Contains(card);

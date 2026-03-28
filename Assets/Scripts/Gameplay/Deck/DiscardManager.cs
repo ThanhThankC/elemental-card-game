@@ -35,7 +35,7 @@ public class DiscardManager : MonoBehaviour
 
     public void UpdateAvailableSpace(int spaceSlot)
     {
-        requiredDiscardCount = GameRules.MAXDRAW_PER_TURN - spaceSlot;
+        requiredDiscardCount = GameRules.MAX_DRAW_PER_TURN - spaceSlot;
         if (requiredDiscardCount < 0) selectedDiscardCount = 0;
 
         NotifyRequirementChanged();

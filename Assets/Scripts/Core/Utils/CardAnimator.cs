@@ -22,23 +22,6 @@ public static class CardAnimator
         seq.OnKill(() => onKill?.Invoke());
     }
 
-    public static void AnimateToFieldFaceDown(Card card, Vector3 targetPos, float moveDuration, float flipDuration, Quaternion targetRot = default, CardState stateEnd = CardState.OnField, System.Action onComplete = null)
-    {
-        Vector3 scale = CardVisualConfig.GetRestingScale(stateEnd);
-        Quaternion finalRot = targetRot == default ? Quaternion.identity : targetRot;
-
-        Sequence seq = DOTween.Sequence();
-        seq.Append(card.transform.DOMove(targetPos, moveDuration).SetEase(Ease.OutCubic));
-        seq.Join(card.transform.DOLocalRotateQuaternion(finalRot, moveDuration).SetEase(Ease.OutCubic));
-        seq.Join(card.transform.DOScaleY(scale.y, moveDuration));
-        seq.InsertCallback(moveDuration * 0.5f, () => 
-        {
-            card.GetComponent<CardFlip>().FlipToFaceDown(scale.x, flipDuration);
-        });
-
-        seq.OnComplete(() => onComplete?.Invoke());
-    }
-
     public static void AnimateToHand(Card card, float moveDuration, float flipDuration = -1, System.Action onComplete = null)
     {
         if (card == null) return;

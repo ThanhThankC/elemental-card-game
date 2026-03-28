@@ -10,7 +10,8 @@ public static class GameRules
     public const int HIGH_TIER_SACRIFICE_COUNT = 2;
 
     public const int MAX_HAND_SIZE = 7;
-    public const int MAXDRAW_PER_TURN = 2;
+    public const int MAX_DRAW_PER_TURN = 2;
+
     public const int MAX_MONSTER_ON_FIELD = 7;
     public const int MAX_SPELL_TRAP_ON_FIELD = 5;
 

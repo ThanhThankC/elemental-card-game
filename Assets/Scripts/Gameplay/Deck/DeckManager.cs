@@ -160,7 +160,7 @@ public class DeckManager : MonoBehaviour
 
     private void DrawSingleCard()
     {
-        if (deck.Count == 0 || handLayout.GetCardCount() >= maxHandSize) return;
+        if (deck.Count == 0 || !handLayout.HasEmptySlot()) return;
 
         CardSelectionManager.Instance?.DeselectAll();
 
@@ -194,10 +194,6 @@ public class DeckManager : MonoBehaviour
     private void AnimateCardDraw(Card card)
     {
         card.transform.localScale = CardVisualConfig.GetRestingScale(CardState.InDeck);
-
-        //Sequence drawSeq = DOTween.Sequence();
-        //drawSeq.Append(card.DOScale(CardVisualConfig.GetRestingScale(CardState.InHand), drawDuration).SetEase(drawEase));
-        //drawSeq.OnComplete(() => { handLayout.AddCard(card); });
 
         CardAnimator.AnimateToHand(
             card,

@@ -73,7 +73,12 @@ public class TrapController : MonoBehaviour
             return;
         }
 
-        //if (handLayout.)
+        if (!handLayout.HasEmptySlot())
+        {
+            Debug.LogWarning($"[TrapController] No empty slots available in hand");
+            return;
+        }
+
         GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
 
         Card cardToPlace = trapCard;
