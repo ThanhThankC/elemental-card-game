@@ -26,8 +26,10 @@ public class CardActionMenu : MonoBehaviour
     [Header("Game References")]
     [SerializeField] private MonsterZone playerMonsterZone;
     [SerializeField] private SpellZone spellZone;
+    [SerializeField] private TrapZone trapZone; 
     [SerializeField] private DeckManager deckManager;
     [SerializeField] private Transform graveyardZone;
+    [SerializeField] private HandLayoutManager handLayout;
 
     [Header("Animation")]
     [SerializeField] private float showDuration = 0.2f;
@@ -59,25 +61,22 @@ public class CardActionMenu : MonoBehaviour
         instance = this;
 
         if (playerMonsterZone == null)
-        {
-            playerMonsterZone = FindObjectOfType<MonsterZone>();
-            if (playerMonsterZone == null)
-                Debug.LogWarning($"[CardActionMenu] MonsterZone not found!");
-        }
+           Debug.LogWarning($"[CardActionMenu] MonsterZone not found!");
 
         if (spellZone == null)
-        {
-            spellZone = FindObjectOfType<SpellZone>();
-            if (spellZone == null)
-                Debug.LogWarning($"[SpellZone] MonsterZone not found!");
-        }
+           Debug.LogWarning($"[CardActionMenu] MonsterZone not found!");
+
+        if (trapZone == null)
+            Debug.LogWarning($"[CardActionMenu] TrapZone not found!");
 
         if (deckManager == null)
-        {
-            deckManager = FindObjectOfType<DeckManager>();
-            if (deckManager == null)
-                Debug.LogWarning($"[CardActionMenu] DeckManager not found!");
-        }
+            Debug.LogWarning($"[CardActionMenu] DeckManager not found!");
+
+        if (graveyardZone == null)
+            Debug.LogWarning($"[CardActionMenu] GraveyardZone not found!");
+
+        if (handLayout == null)
+            Debug.LogWarning($"[CardActionMenu] HandLayoutManager not found!");
 
         if (summonButton != null)
             summonButton.onClick.AddListener(OnSummonClicked);
@@ -110,6 +109,9 @@ public class CardActionMenu : MonoBehaviour
         UpdateButtonStates();
 
         UpdateVisualSummonButton(card, true);
+        UpdateVisualSetButton(card);
+        UpdateVisualActivateButton(card);
+        UpdateVisualRecallButton(card);
 
         scaleTween?.Kill();
 
@@ -121,7 +123,6 @@ public class CardActionMenu : MonoBehaviour
 
         scaleTween = menuPanel.transform.DOScale(Vector3.one, showDuration).SetEase(showEase);
     }
-
 
     /// <summary>
     /// [TKC] Hidden action menu.
@@ -216,6 +217,37 @@ public class CardActionMenu : MonoBehaviour
             summonButtonText.text = isVietnamese ? summonTextVN : summonTextEN;
             summonButton.interactable = true;
         }
+    }
+
+    private void UpdateVisualSetButton(Card card)
+    {
+        if (setButton == null) return;
+
+        if (card.GetCardData().Type == CardType.Spell)
+            setButton.interactable = spellZone.HasEmptySlot();
+        else if (card.GetCardData().Type == CardType.Trap)
+            setButton.interactable = trapZone.HasEmptySlot();
+    }
+
+    private void UpdateVisualActivateButton(Card card)
+    {
+        if (activateButton == null) return;
+        bool canActivate = false;
+        if (card.GetCardData().Type == CardType.Spell)
+        {
+            canActivate = SpellController.Instance != null && SpellController.Instance.IsWaitingForTarget;
+        }
+        else if (card.GetCardData().Type == CardType.Trap)
+        {
+            canActivate = TrapController.Instance != null; //TODO check waiting for target ?
+        }
+        activateButton.interactable = canActivate;
+    }
+
+    private void UpdateVisualRecallButton(Card card)
+    {
+        if (recallButton == null) return;
+        recallButton.interactable = handLayout.HasEmptySlot() && card.GetState() == CardState.OnField;
     }
 
     private void UpdateButtonStates()
