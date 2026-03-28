@@ -655,10 +655,12 @@ MonoBehaviour:
   summonTextEN: Summon
   sacrificeTextVN: "Hi\u1EBFn t\u1EBF"
   sacrificeTextEN: Sacrifice
-  playerMonsterZone: {fileID: 0}
-  spellZone: {fileID: 0}
-  deckManager: {fileID: 0}
-  graveyardZone: {fileID: 0}
+  playerMonsterZone: {fileID: 2120609339}
+  spellZone: {fileID: 356010167}
+  trapZone: {fileID: 637228050}
+  deckManager: {fileID: 1982424320}
+  graveyardZone: {fileID: 572037458}
+  handLayout: {fileID: 1907012643}
   showDuration: 0.08
   showEase: 27
 --- !u!223 &144747514
@@ -1228,7 +1230,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3114524b51f39ce47a7addf25d2930fe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSlots: 3
   slotTransforms:
   - {fileID: 161792452}
   - {fileID: 144089953}
@@ -2234,7 +2235,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e754a91320f70542a8df891c50a5e84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSlots: 4
   slotTransforms:
   - {fileID: 493946664}
   - {fileID: 1642922316}
@@ -5448,10 +5448,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cd996cf7b2752854886031de453f6411, type: 2}
   - {fileID: 11400000, guid: cd996cf7b2752854886031de453f6411, type: 2}
   - {fileID: 11400000, guid: cd996cf7b2752854886031de453f6411, type: 2}
-  maxHandSize: 7
-  initialDrawCount: 5
   drawDuration: 0.5
-  drawEase: 9
   drawDelay: 0.15
   deckCardBack: {fileID: 775997047}
   shuffleDuration: 1
@@ -5737,7 +5734,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a48156e7e17d3474fb0700c5173aef40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSlots: 7
   slotTransforms:
   - {fileID: 587869814}
   - {fileID: 1936805336}
