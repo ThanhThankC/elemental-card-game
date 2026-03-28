@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class SpellZone : FieldZone
 {
+    protected override int maxSlots() => GameRules.MAX_SPELL_ON_FIELD;
+
     public override bool CanPlaceCard(Card card)
     {
         if (card == null) return false;

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class MonsterZone : FieldZone
 {
+    protected override int maxSlots() => GameRules.MAX_MONSTER_ON_FIELD;
+
     public override bool CanPlaceCard(Card card)
     {
         if (card == null) return false;

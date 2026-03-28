@@ -9,13 +9,15 @@ public static class GameRules
     public const int MID_TIER_SACRIFICE_COUNT = 2;
     public const int HIGH_TIER_SACRIFICE_COUNT = 2;
 
+    public const int STARTING_HAND_SIZE = 5;
     public const int MAX_HAND_SIZE = 7;
     public const int MAX_DRAW_PER_TURN = 2;
 
     public const int MAX_MONSTER_ON_FIELD = 7;
-    public const int MAX_SPELL_TRAP_ON_FIELD = 5;
+    public const int MAX_SPELL_ON_FIELD = 5;
+    public const int MAX_TRAP_ON_FIELD = 4;
 
-    public const int MAXSUMMON_PER_TURN = 2;
+    public const int MAX_SUMMON_PER_TURN = 2;
 
     /// <summary>
     /// Get tier of card (Low/Mid/High).

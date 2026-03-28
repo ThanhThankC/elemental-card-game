@@ -26,13 +26,8 @@ public class DeckManager : MonoBehaviour
     [Header("Deck Configuration")]
     [SerializeField] private List<CardData> deckCards = new List<CardData>();
 
-    [Header("Settings")]
-    [SerializeField] private int maxHandSize = 7;
-    [SerializeField] private int initialDrawCount = 5;
-
     [Header("Draw Settings")]
     [SerializeField] private float drawDuration = 0.5f;
-    [SerializeField] private Ease drawEase = Ease.OutCubic;
     [SerializeField] private float drawDelay = 0.15f;
 
     [Header("Shuffle Animation")]
@@ -102,7 +97,7 @@ public class DeckManager : MonoBehaviour
 
         ShuffleDeck();
 
-        yield return StartCoroutine(DrawCards(initialDrawCount));
+        yield return StartCoroutine(DrawCards(GameRules.STARTING_HAND_SIZE));
     }
 
     private IEnumerator PlayShuffleAnimation()

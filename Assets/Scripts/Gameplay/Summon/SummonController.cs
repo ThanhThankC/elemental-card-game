@@ -4,8 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-//TODO: Dang luc summon thi khoa, khong cho click, drag
-
 /// <summary>
 /// Controls monster summoning with sacrifice mechanics and animations.
 /// Handles direct summon (1-4 stars) and tribute summon (5+ stars).

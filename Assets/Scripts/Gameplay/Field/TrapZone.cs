@@ -4,19 +4,21 @@ using UnityEngine;
 
 public class TrapZone : FieldZone
 {
+    protected override int maxSlots() => GameRules.MAX_TRAP_ON_FIELD;
+
     public override bool CanPlaceCard(Card card)
     {
         if (card == null) return false;
 
         if (card.GetCardData().Type != CardType.Trap)
         {
-            Debug.LogWarning($"[TrapZone] Only trap cards allowed!");
+            Debug.LogWarning($"[trapZone] Only trap cards allowed!");
             return false;
         }
 
         if (!HasEmptySlot())
         {
-            Debug.LogWarning($"[TrapZone] Not space left!");
+            Debug.LogWarning($"[trapZone] Not space left!");
             return false;
         }
 
@@ -39,7 +41,7 @@ public class TrapZone : FieldZone
 
         if (slotIndex == -1)
         {
-            Debug.LogWarning($"[TrapZone] Not space left!");
+            Debug.LogWarning($"[trapZone] Not space left!");
             return false;
         }
 
@@ -47,7 +49,7 @@ public class TrapZone : FieldZone
 
         if (success)
         {
-            Debug.Log($"[TrapZone] Placed {card.GetCardData().GetCardName()} face-down to slot {slotIndex}");
+            Debug.Log($"[trapZone] Placed {card.GetCardData().GetCardName()} face-down to slot {slotIndex}");
         }
 
         return success;

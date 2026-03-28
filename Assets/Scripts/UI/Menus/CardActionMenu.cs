@@ -215,7 +215,7 @@ public class CardActionMenu : MonoBehaviour
         if (stars <= GameRules.LOW_TIER_MAX_STARS)
         {
             summonButtonText.text = isVietnamese ? summonTextVN : summonTextEN;
-            summonButton.interactable = true;
+            summonButton.interactable = playerMonsterZone.HasEmptySlot();
         }
     }
 
@@ -235,7 +235,7 @@ public class CardActionMenu : MonoBehaviour
         bool canActivate = false;
         if (card.GetCardData().Type == CardType.Spell)
         {
-            canActivate = SpellController.Instance != null && SpellController.Instance.IsWaitingForTarget;
+            canActivate = true; //TODO check waiting for target ?
         }
         else if (card.GetCardData().Type == CardType.Trap)
         {

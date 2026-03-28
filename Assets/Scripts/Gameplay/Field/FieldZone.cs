@@ -5,7 +5,6 @@ using UnityEngine;
 public abstract class FieldZone : MonoBehaviour
 {
     [Header("Zone Configuration")]
-    [SerializeField] protected int maxSlots = 7;
     [SerializeField] protected Transform[] slotTransforms;
 
     protected FieldSlot[] slots;
@@ -14,6 +13,8 @@ public abstract class FieldZone : MonoBehaviour
     {
         InitializeSlots();
     }
+
+    protected abstract int maxSlots();
 
     public abstract bool CanPlaceCard(Card card);
 
@@ -24,7 +25,7 @@ public abstract class FieldZone : MonoBehaviour
         if (slotTransforms == null || slotTransforms.Length == 0)
             { Debug.LogError($"[{GetType().Name}] Slot transform not assigned!"); return; }
 
-        int actualCount = Mathf.Min(maxSlots, slotTransforms.Length);
+        int actualCount = Mathf.Min(maxSlots(), slotTransforms.Length);
 
         slots = new FieldSlot[actualCount];
 
@@ -118,6 +119,4 @@ public abstract class FieldZone : MonoBehaviour
         if (!IsValidSlotIndex(slotIndex)) return null;
         return slots[slotIndex].Transform;
     }
-
-    public int SlotCount => slotTransforms.Length;
 }
