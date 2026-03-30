@@ -40,7 +40,6 @@ public class TrapController : MonoBehaviour
     {
         if (trapCard == null) return;
 
-        CardSelectionManager.Instance?.DeselectAll();
         CardActionMenu.Instance?.HideMenu();
 
         if (trapCard.GetCardData().Type != CardType.Trap)
@@ -55,14 +54,13 @@ public class TrapController : MonoBehaviour
         }
         else if (trapCard.GetState() == CardState.OnField)
         {
-            ActivateTrapCard();
+            ActivateTrapCard(trapCard);
         }
     }
 
     public void RequestRecall(Card trapCard)
     {
         if (trapCard == null) return;
-
 
         CardSelectionManager.Instance?.DeselectAll();
         CardActionMenu.Instance?.HideMenu();
@@ -99,6 +97,8 @@ public class TrapController : MonoBehaviour
 
     private void SetTrapCard(Card trapCard)
     {
+        CardSelectionManager.Instance?.DeselectAll();
+
         int slotIndex = trapZone.FindEmptySlot();
         Transform targetSlot = trapZone.GetSlotTransform(slotIndex);
 
@@ -133,8 +133,16 @@ public class TrapController : MonoBehaviour
          );
     }
 
-    private void ActivateTrapCard()
+    private void ActivateTrapCard(Card trapCard)
     {
-        Debug.Log("Hello");
+        Card cardToPlace = trapCard;
+
+        CardAnimator.AnimateFlipFaceUp(
+            cardToPlace,
+            onComplete: () =>
+            {
+
+            }
+        );
     }
 }

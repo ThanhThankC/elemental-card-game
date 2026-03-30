@@ -1,8 +1,20 @@
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public static class CardAnimator
 {
+    public static void AnimateFlipFaceUp(Card card, float flipDuration = -1, System.Action onComplete = null)
+    {
+        if (card == null) return;
+
+        CardFlip flip = card.GetComponent<CardFlip>();
+        if (flip == null) return;
+
+        Vector3 scale = CardVisualConfig.GetSelectedScale(CardState.OnField);
+        flip.FlipToFaceUp(scale.x, flipDuration, onComplete);
+    }
+
     public static void AnimateToField(Card card, Transform targetSlot, float moveDuration, float flipDuration = -1, System.Action onComplete = null, System.Action onKill = null)
     {
         if (card == null || targetSlot == null) return;
@@ -44,7 +56,7 @@ public static class CardAnimator
 
         Sequence seq = DOTween.Sequence();
         seq.Append(card.DOMove(graveyard.position, duration).SetEase(Ease.OutCubic));
-        seq.Join(card.DOLocalRotateQuaternion(Quaternion.identity, duration));
+        seq.Join(card.DORotateQuaternion(Quaternion.identity, duration));
         seq.Join(card.DOScale(scale, duration));
         seq.OnComplete(() => { card.gameObject.SetActive(false); onComplete?.Invoke(); });
     }
