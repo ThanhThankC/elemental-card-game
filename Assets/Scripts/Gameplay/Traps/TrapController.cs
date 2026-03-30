@@ -110,7 +110,6 @@ public class TrapController : MonoBehaviour
         }
 
         GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
-        CardSelectionManager.Instance?.DeselectAll();
 
         if (handLayout != null)
         {
@@ -135,14 +134,50 @@ public class TrapController : MonoBehaviour
 
     private void ActivateTrapCard(Card trapCard)
     {
+        CardData data = trapCard.GetCardData();
+        ITrapEffect effect = TrapEffectRegistry.Build(data);
+
+        if (effect == null) return;
+
+        TrapContext context = BuildContext(trapCard, null);
+
+        if (!effect.CanActivate(context)) return;
+
         Card cardToPlace = trapCard;
 
         CardAnimator.AnimateFlipFaceUp(
             cardToPlace,
             onComplete: () =>
             {
-
+                if (effect.NeedsTarget)
+                {
+                    //TODO: 
+                    Debug.Log("[TrapController] On select target mode!");
+                }
+                else
+                {
+                    ExecuteTrap(effect, context, trapCard);
+                }
             }
         );
+    }
+
+    private void ExecuteTrap(ITrapEffect effect, TrapContext context, Card trapCard)
+    {
+        effect.Execute(context);
+        Debug.Log("---Execute");
+
+        //TODO: Add disappear effect
+        trapCard.SetState(CardState.InGraveyard);
+        trapCard.gameObject.SetActive(false);
+    }
+
+    private TrapContext BuildContext(Card trapCard, Card targetCard)
+    {
+        return new TrapContext
+        {
+            SpellCard = trapCard,
+            TargetMonster = targetCard
+        };
     }
 }

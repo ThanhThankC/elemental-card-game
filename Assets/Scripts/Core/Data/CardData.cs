@@ -31,7 +31,7 @@ public class CardData : ScriptableObject
     [SerializeField] private int spellBuffAmount = 0;
 
     [Header("Trap Info")]
-    [SerializeField] private TrapType trapType = TrapType.Normal;
+    [SerializeField] private TrapEffectID trapEffectID = TrapEffectID.None;
 
     [Header("Descriptions")]
     [TextArea(3, 6)]
@@ -55,8 +55,7 @@ public class CardData : ScriptableObject
     public SpellType SpellType => spellType;
     public SpellEffectID SpellEffectID => spellEffectID;
     public int SpellBuffAmount => spellBuffAmount;
-    public TrapType TrapType => trapType;
-
+    public TrapEffectID TrapEffectID => trapEffectID;
     public string GetCardName(bool isVietnamese = true)
     {
         return isVietnamese ? cardNameVN : cardNameEN;

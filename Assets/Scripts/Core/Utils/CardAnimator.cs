@@ -1,6 +1,5 @@
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public static class CardAnimator
 {

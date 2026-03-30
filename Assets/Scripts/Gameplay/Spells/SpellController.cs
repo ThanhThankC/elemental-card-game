@@ -18,7 +18,7 @@ public class SpellController : MonoBehaviour
         get
         {
             if (instance == null)
-                instance = FindAnyObjectByType<SpellController>();
+                instance = FindObjectOfType<SpellController>();
             return instance;
         }
     }

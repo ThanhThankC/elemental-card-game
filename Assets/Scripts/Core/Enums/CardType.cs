@@ -12,9 +12,3 @@ public enum SpellType
     Continuous,
     ContinuousPlus,
 }
-
-public enum TrapType
-{
-    Normal,
-    Special,
-}
