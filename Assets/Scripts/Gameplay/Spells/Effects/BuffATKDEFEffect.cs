@@ -6,8 +6,6 @@ public class BuffATKDEFEffect : ISpellEffect
 {
     private readonly int buffAmount;
 
-    public SpellEffectID EffectID => SpellEffectID.BuffATKDEF;
-
     public bool SendToGraveyardFirst => false;
 
     public bool NeedsTarget => true;

@@ -4,8 +4,6 @@ using static UnityEngine.GraphicsBuffer;
 
 public class DestroyMonsterEffect : ISpellEffect
 {
-    public SpellEffectID EffectID => SpellEffectID.DestroyMonster;
-
     public bool SendToGraveyardFirst => false;
 
     public bool NeedsTarget => true;

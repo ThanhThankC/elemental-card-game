@@ -6,8 +6,6 @@ public class BuaHoMenhEffect : IContinuousSpellEffect
 {
     private readonly int buffAmount;
 
-    public SpellEffectID EffectID => SpellEffectID.BuaHoMenh;
-
     public bool SendToGraveyardFirst => false;
 
     public bool NeedsTarget => false;
