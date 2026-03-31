@@ -24,7 +24,9 @@ MonoBehaviour:
   rubyCount: 0
   lotusCount: 0
   spellType: 0
-  trapType: 0
+  spellEffectID: 0
+  spellBuffAmount: 0
+  trapEffectID: 1
   normalEffectDescVN: "C\xF3 th\u1EC3 ph\u1EA3n \u0111\xF2n l\u1EA1i m\u1ED9t \u0111\xF2n
     t\u1EA5n c\xF4ng c\u1EE7a qu\xE1i th\xFA."
   normalEffectDescEN: 

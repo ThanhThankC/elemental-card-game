@@ -165,7 +165,6 @@ public class TrapController : MonoBehaviour
     private void ExecuteTrap(ITrapEffect effect, TrapContext context, Card trapCard)
     {
         effect.Execute(context);
-        Debug.Log("---Execute");
 
         //TODO: Add disappear effect
         trapCard.SetState(CardState.InGraveyard);
@@ -177,7 +176,8 @@ public class TrapController : MonoBehaviour
         return new TrapContext
         {
             SpellCard = trapCard,
-            TargetMonster = targetCard
+            TargetMonster = targetCard,
+            PlayerMonsterZone = playerMonsterZone
         };
     }
 }
