@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TrapController : MonoBehaviour
+public class TrapController : BaseCardController, ITargetableController
 {
     [Header("References")]
     [SerializeField] private MonsterZone playerMonsterZone;
@@ -36,40 +34,132 @@ public class TrapController : MonoBehaviour
         instance = this;
     }
 
-    public void RequestSet(Card trapCard)
+    public void RequestAction(Card trapCard)
     {
         if (trapCard == null) return;
+        if (!ValidateCard(trapCard)) return;
+
+        pendingCard = trapCard;
 
         CardActionMenu.Instance?.HideMenu();
 
-        if (trapCard.GetCardData().Type != CardType.Trap)
+        if (trapCard.GetState() == CardState.InHand)
+            OnRequestFromHand();
+        else if (trapCard.GetState() == CardState.OnField)
+            OnRequestFromField();
+    }
+
+    public void OnFieldCardClickedAsTarget(Card targetCard)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void CancelTargeting()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    protected override bool ValidateCard(Card card) => card.GetCardData().Type == CardType.Trap;
+
+    protected override void OnRequestFromHand()
+    {
+        CardSelectionManager.Instance?.DeselectAll();
+
+        int slotIndex = trapZone.FindEmptySlot();
+        Transform targetSlot = trapZone.GetSlotTransform(slotIndex);
+
+        if (targetSlot == null)
         {
-            Debug.LogWarning($"[TrapController] Only trap cards allowed");
+            Debug.LogWarning("[TrapController] Target transform is null!");
+            pendingCard.SetState(CardState.InHand);
             return;
         }
 
-        if (trapCard.GetState() == CardState.InHand)
+        GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
+        handLayout?.RemoveCard(pendingCard.transform);
+
+        Card cardToPlace = pendingCard;
+
+        CardAnimator.AnimateToField(
+            cardToPlace,
+            targetSlot,
+            setDuration,
+            flipDuration,
+            onComplete: () =>
+            {
+                trapZone.PlaceTrap(cardToPlace, slotIndex);
+                cardToPlace.SetState(CardState.OnField);
+                GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+            }
+         );
+
+        pendingCard = null;
+    }
+
+    protected override void OnRequestFromField()
+    {
+        CardData data = pendingCard.GetCardData();
+        pendingEffect = TrapEffectRegistry.Build(data);
+
+        if (pendingEffect == null)
         {
-            SetTrapCard(trapCard);
+            Debug.LogWarning($"[TrapController] No effect found for {data.GetCardName()}");
+            return;
         }
-        else if (trapCard.GetState() == CardState.OnField)
+
+        TrapContext context = BuildContext(null) as TrapContext;
+        if (!pendingEffect.CanActivate(context))
         {
-            ActivateTrapCard(trapCard);
+            Debug.LogWarning($"[TrapController] Cannot activate: {data.GetCardName()}");
+            return;
         }
+
+        Card cardToPlace = pendingCard;
+
+        CardAnimator.AnimateFlipFaceUp(cardToPlace, onComplete: () =>
+        {
+            if (pendingEffect.NeedsTarget)
+            {
+                //TODO: 
+                Debug.Log("[TrapController] On select target mode!");
+                return;
+            }
+
+            ExecuteTrap(context);
+        });
+    }
+
+    private void ExecuteTrap(TrapContext context)
+    {
+        Card card = pendingCard;      
+        ISpellEffect effect = pendingEffect;
+
+        pendingCard = null;             
+        pendingEffect = null;
+
+        effect.Execute(context);
+        trapZone.RemoveCard(card);
+        SendToGraveyard(card, handLayout, graveyardZone);
+        GamePhaseManager.Instance.SetPhase(GamePhase.Idle); 
+    }
+
+    protected override SpellContext BuildContext(Card targetCard)
+    {
+        return new TrapContext
+        {
+            SpellCard = pendingCard,
+            TargetMonster = targetCard,
+            PlayerMonsterZone = playerMonsterZone
+        };
     }
 
     public void RequestRecall(Card trapCard)
     {
         if (trapCard == null) return;
+        if (!ValidateCard(trapCard)) return;
 
         CardSelectionManager.Instance?.DeselectAll();
         CardActionMenu.Instance?.HideMenu();
-
-        if (trapCard.GetCardData().Type != CardType.Trap)
-        {
-            Debug.LogWarning($"[TrapController] Only trap cards allowed");
-            return;
-        }
 
         if (!handLayout.HasEmptySlot())
         {
@@ -93,91 +183,5 @@ public class TrapController : MonoBehaviour
                 GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
             }
         );
-    }
-
-    private void SetTrapCard(Card trapCard)
-    {
-        CardSelectionManager.Instance?.DeselectAll();
-
-        int slotIndex = trapZone.FindEmptySlot();
-        Transform targetSlot = trapZone.GetSlotTransform(slotIndex);
-
-        if (targetSlot == null)
-        {
-            Debug.LogWarning("[TrapController] Target transform is null!");
-            trapCard.SetState(CardState.InHand);
-            return;
-        }
-
-        GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
-
-        if (handLayout != null)
-        {
-            handLayout.RemoveCard(trapCard.transform);
-        }
-
-        Card cardToPlace = trapCard;
-
-        CardAnimator.AnimateToField(
-            cardToPlace,
-            targetSlot,
-            setDuration,
-            flipDuration,
-            onComplete: () =>
-            {
-                trapZone.PlaceTrap(cardToPlace, slotIndex);
-                cardToPlace.SetState(CardState.OnField);
-                GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
-            }
-         );
-    }
-
-    private void ActivateTrapCard(Card trapCard)
-    {
-        CardData data = trapCard.GetCardData();
-        ITrapEffect effect = TrapEffectRegistry.Build(data);
-
-        if (effect == null) return;
-
-        TrapContext context = BuildContext(trapCard, null);
-
-        if (!effect.CanActivate(context)) return;
-
-        Card cardToPlace = trapCard;
-
-        CardAnimator.AnimateFlipFaceUp(
-            cardToPlace,
-            onComplete: () =>
-            {
-                if (effect.NeedsTarget)
-                {
-                    //TODO: 
-                    Debug.Log("[TrapController] On select target mode!");
-                }
-                else
-                {
-                    ExecuteTrap(effect, context, trapCard);
-                }
-            }
-        );
-    }
-
-    private void ExecuteTrap(ITrapEffect effect, TrapContext context, Card trapCard)
-    {
-        effect.Execute(context);
-
-        //TODO: Add disappear effect
-        trapCard.SetState(CardState.InGraveyard);
-        trapCard.gameObject.SetActive(false);
-    }
-
-    private TrapContext BuildContext(Card trapCard, Card targetCard)
-    {
-        return new TrapContext
-        {
-            SpellCard = trapCard,
-            TargetMonster = targetCard,
-            PlayerMonsterZone = playerMonsterZone
-        };
     }
 }

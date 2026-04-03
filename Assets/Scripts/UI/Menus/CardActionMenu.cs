@@ -49,6 +49,7 @@ public class CardActionMenu : MonoBehaviour
     }
 
     private Card currentCard;
+    private ICardController cardController;
     private Tween scaleTween;
 
     private void Awake()
@@ -105,6 +106,7 @@ public class CardActionMenu : MonoBehaviour
         if (menuPanel == null) return;
 
         currentCard = card;
+        cardController = ResolveController(card);
 
         UpdateButtonStates();
 
@@ -173,29 +175,10 @@ public class CardActionMenu : MonoBehaviour
         }
     }
 
-    private void OnSetClicked() => RequestAction();
+    private void OnSetClicked() => cardController?.RequestAction(currentCard);
+    private void OnActivateClicked() => cardController?.RequestAction(currentCard);
 
-    private void OnActivateClicked() => RequestAction();
-
-    private void RequestAction()
-    {
-        if (currentCard == null) return;
-
-        switch (currentCard.GetCardData().Type)
-        {
-            case CardType.Spell:
-                SpellController.Instance?.RequestActivate(currentCard);
-                break;
-            case CardType.Trap:
-                TrapController.Instance?.RequestSet(currentCard);
-                break;
-            case CardType.Special:
-                // TODO
-                break;
-        }
-    }
-
-    public void OnRecallClicked()
+    private void OnRecallClicked()
     {
         TrapController.Instance?.RequestRecall(currentCard);
     }
@@ -292,5 +275,17 @@ public class CardActionMenu : MonoBehaviour
                 recallButton.gameObject.SetActive(false);
                 break;
         }
+    }
+
+    private ICardController ResolveController(Card card)
+    {
+        if (card == null) return null;
+
+        return card.GetCardData().Type switch
+        {
+            CardType.Spell => SpellController.Instance,
+            CardType.Trap => TrapController.Instance,
+            _ => null
+        };
     }
 }

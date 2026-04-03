@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SpellController : MonoBehaviour
+public class SpellController : BaseCardController, ITargetableController
 {
     [Header("References")]
     [SerializeField] private MonsterZone playerMonsterZone;
@@ -23,11 +23,6 @@ public class SpellController : MonoBehaviour
         }
     }
 
-    private Card spellCard;
-    private ISpellEffect effect;
-
-    public bool IsWaitingForTarget => spellCard != null && effect != null;
-
     private void Awake()
     {
         if (instance != null && instance != this)
@@ -38,18 +33,19 @@ public class SpellController : MonoBehaviour
         instance = this;
     }
 
-    public void RequestActivate(Card spellCard)
+    public void RequestAction(Card spellCard)
     {
         if (spellCard == null) return;
+        if (!ValidateCard(spellCard)) return;
 
         CardSelectionManager.Instance?.DeselectAll();
         CardActionMenu.Instance?.HideMenu();
 
         CardData data = spellCard.GetCardData();
-        this.spellCard = spellCard;
-        effect = SpellEffectRegistry.Build(data);
+        pendingCard = spellCard;
+        pendingEffect = SpellEffectRegistry.Build(data);
 
-        if (effect == null)
+        if (pendingEffect == null)
         {
             Debug.LogWarning($"[SpellController] No effect found for {data.GetCardName()}");
             return;
@@ -57,46 +53,80 @@ public class SpellController : MonoBehaviour
 
         //TODO refactor: In future spellCard required both: NonTarget + Target ??;
         SpellContext context = BuildContext(null);
-        if (!effect.CanActivate(context))
+        if (!pendingEffect.CanActivate(context))
         {
             Debug.LogWarning($"[SpellController] Cannot activate: {data.GetCardName()}");
             return;
         }
 
-        if (effect is IContinuousSpellEffect continuousEffect)
+        if (spellCard.GetState() == CardState.InHand)
+            OnRequestFromHand();
+        else if (spellCard.GetState() == CardState.OnField)
+            OnRequestFromField();
+    }
+
+    protected override bool ValidateCard(Card card) => card.GetCardData().Type == CardType.Spell;
+
+    protected override void OnRequestFromHand()
+    {
+        if (pendingEffect is IContinuousSpellEffect continuousEffect)
         {
-            ActiveContinuous(continuousEffect, context);
+            ActiveContinuous(continuousEffect, BuildContext(null));
             return;
         }
 
-        if (effect.NeedsTarget)
+        if (pendingEffect.NeedsTarget)
         {
             EnterTargetingMode();
             return;
         }
 
-        ExecuteNormal(context);
+        ExecuteNormal(BuildContext(null));
     }
+
+    protected override void OnRequestFromField() { }
 
     public void OnFieldCardClickedAsTarget(Card targetCard)
     {
-        if (spellCard == null || effect == null) return;
+        if (pendingCard == null || pendingEffect == null) return;
         if (targetCard == null) return;
 
         SpellContext context = BuildContext(targetCard);
-
-        if (!effect.CanActivate(context))
+        if (!pendingEffect.CanActivate(context))
         {
             Debug.LogWarning($"[SpellController] Invalid target: {targetCard.GetCardData().GetCardName()}");
             return;
         }
 
-        effect.Execute(context);
-        SendToGraveyard(spellCard);
+        pendingEffect.Execute(context);
+        SendToGraveyard(pendingCard, handLayout, graveyardZone);
 
-        spellCard = null;
-        effect = null;
+        pendingCard = null;
+        pendingEffect = null;
         GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+    }
+
+    public void CancelTargeting()
+    {
+        if (pendingCard == null || pendingEffect == null) return;
+
+        Debug.Log("[SpellController] Targeting cancelled");
+        pendingCard = null;
+        pendingEffect = null;
+        GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+        CardActionMenu.Instance?.ShowMenu(CardSelectionManager.Instance?.CurrentHandCard);
+    }
+
+    protected override SpellContext BuildContext(Card target)
+    {
+        return new SpellContext
+        {
+            SpellCard = pendingCard,
+            TargetMonster = target,
+            PlayerMonsterZone = playerMonsterZone,
+            DeckManager = deckManager,
+            GraveyardZone = graveyardZone
+        };
     }
 
     private void ActiveContinuous(IContinuousSpellEffect continuousEffect, SpellContext context)
@@ -107,7 +137,7 @@ public class SpellController : MonoBehaviour
         if (targetSlot == null)
         {
             Debug.LogWarning("[SpellController] Target transform is null!");
-            spellCard.SetState(CardState.InHand);
+            pendingCard.SetState(CardState.InHand);
             return;
         }
 
@@ -116,13 +146,13 @@ public class SpellController : MonoBehaviour
 
         if (handLayout != null)
         {
-            handLayout.RemoveCard(spellCard.transform);
+            handLayout.RemoveCard(pendingCard.transform);
         }
 
-        Card cardToPlace = spellCard;
+        Card cardToPlace = pendingCard;
 
         CardAnimator.AnimateToField(
-            spellCard,
+            pendingCard,
             targetSlot,
             setDuration,
             onComplete: () =>
@@ -135,61 +165,23 @@ public class SpellController : MonoBehaviour
             }
          );
 
-        spellCard = null;
-        effect = null;
+        pendingCard = null;
+        pendingEffect = null;
     }
 
     private void ExecuteNormal(SpellContext context)
     {
-        if (effect.SendToGraveyardFirst)
-            SendToGraveyard(spellCard);
+        if (pendingEffect.SendToGraveyardFirst)
+            SendToGraveyard(pendingCard, handLayout, graveyardZone);
 
-        effect.Execute(context);
+        pendingEffect.Execute(context);
 
-        if (!effect.SendToGraveyardFirst)
-            SendToGraveyard(spellCard);
+        if (!pendingEffect.SendToGraveyardFirst)
+            SendToGraveyard(pendingCard, handLayout, graveyardZone);
 
-        spellCard = null;
-        effect = null;
+        pendingCard = null;
+        pendingEffect = null;
         GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
-    }
-
-    public void CancelTargeting()
-    {
-        if (spellCard == null || effect == null) return;
-
-        Debug.Log("[SpellController] Targeting cancelled");
-        spellCard = null;
-        effect = null;
-        GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
-        CardActionMenu.Instance?.ShowMenu(CardSelectionManager.Instance?.CurrentHandCard);
-    }
-
-    private void EnterTargetingMode()
-    {
-        GamePhaseManager.Instance.SetPhase(GamePhase.SpellTargeting);
-    }
-
-    private void SendToGraveyard(Card spellCard)
-    {
-        handLayout.RemoveCard(spellCard.transform);
-        //TODO: Add disappear effect
-        spellCard.SetState(CardState.InGraveyard);
-        spellCard.transform.position = graveyardZone.position;
-        spellCard.gameObject.SetActive(false);
-        CardSelectionManager.Instance?.NotifyCardSentToGraveyard(spellCard);
-    }
-
-    private SpellContext BuildContext(Card target)
-    {
-        return new SpellContext
-        {
-            SpellCard = spellCard,
-            TargetMonster = target,
-            PlayerMonsterZone = playerMonsterZone,
-            DeckManager = deckManager,
-            GraveyardZone = graveyardZone
-        };
     }
 
     private void Update()
