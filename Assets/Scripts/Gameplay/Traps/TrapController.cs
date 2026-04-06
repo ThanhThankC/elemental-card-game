@@ -149,7 +149,8 @@ public class TrapController : BaseCardController, ITargetableController
         {
             SpellCard = pendingCard,
             TargetMonster = targetCard,
-            PlayerMonsterZone = playerMonsterZone
+            PlayerMonsterZone = playerMonsterZone,
+            GraveyardZone = graveyardZone
         };
     }
 

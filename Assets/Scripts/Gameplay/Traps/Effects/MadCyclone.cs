@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -11,13 +10,32 @@ public class MadCyclone : ITrapEffect
     public bool CanActivate(SpellContext context)
     {
         return context.PlayerMonsterZone.GetAllCards().Count > 0;
+        //TODO add EnemyMonsterZone
     }
 
     public void Execute(SpellContext context)
     {
-        foreach (Card card in context.PlayerMonsterZone.GetAllCards())
+        TrapContext ctx = context as TrapContext;
+        if (ctx == null) return;
+
+        List<Card> monsters = new List<Card>(ctx.PlayerMonsterZone.GetAllCards());
+
+        foreach (Card monster in monsters)
         {
-            card.ModifyATK(-500);
+            bool removed = ctx.PlayerMonsterZone.RemoveCard(monster);
+            if (!removed)
+            {
+                Debug.LogWarning($"[MadCyclone] Failed to remove: {monster.GetCardData().name}");
+                continue;
+            }
+
+            monster.SetState(CardState.Discarding);
+            CardSelectionManager.Instance?.NotifyCardSentToGraveyard(monster);
+            CardAnimator.AnimateToGraveyard(
+                monster.transform,
+                ctx.GraveyardZone,
+                onComplete: () => monster.SetState(CardState.InGraveyard)
+            );
         }
     }
 }

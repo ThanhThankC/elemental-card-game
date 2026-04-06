@@ -54,8 +54,8 @@ public static class CardAnimator
         Vector3 scale = CardVisualConfig.GetRestingScale(CardState.InGraveyard);
 
         Sequence seq = DOTween.Sequence();
-        seq.Append(card.DOMove(graveyard.position, duration).SetEase(Ease.OutCubic));
-        seq.Join(card.DORotateQuaternion(Quaternion.identity, duration));
+        //seq.Append(card.DOMove(graveyard.position, duration).SetEase(Ease.OutCubic));
+        //seq.Join(card.DORotateQuaternion(Quaternion.identity, duration));
         seq.Join(card.DOScale(scale, duration));
         seq.OnComplete(() => { card.gameObject.SetActive(false); onComplete?.Invoke(); });
     }
