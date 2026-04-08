@@ -51,7 +51,22 @@ public class TrapController : BaseCardController, ITargetableController
 
     public void OnFieldCardClickedAsTarget(Card targetCard)
     {
-        throw new System.NotImplementedException();
+        if (pendingCard == null || pendingEffect == null) return;
+        if (targetCard == null) return;
+
+        SpellContext context = BuildContext(targetCard);
+        if (!pendingEffect.CanActivate(context))
+        {
+            Debug.LogWarning($"[TrapController] Invalid target: {targetCard.GetCardData().GetCardName()}");
+            return;
+        }
+
+        pendingEffect.Execute(context);
+        SendToGraveyard(pendingCard, handLayout, graveyardZone);
+
+        pendingCard = null;
+        pendingEffect = null;
+        GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
     }
 
     public void CancelTargeting()
@@ -120,8 +135,7 @@ public class TrapController : BaseCardController, ITargetableController
         {
             if (pendingEffect.NeedsTarget)
             {
-                //TODO: 
-                Debug.Log("[TrapController] On select target mode!");
+                EnterTargetingMode(instance);
                 return;
             }
 

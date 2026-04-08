@@ -9,8 +9,10 @@ public class MadCyclone : ITrapEffect
 
     public bool CanActivate(SpellContext context)
     {
-        return context.PlayerMonsterZone.GetAllCards().Count > 0;
-        //TODO add EnemyMonsterZone
+        TrapContext ctx = context as TrapContext;
+        if (ctx == null) return false;
+
+        return ctx.PlayerMonsterZone.GetAllCards().Count > 0;
     }
 
     public void Execute(SpellContext context)
