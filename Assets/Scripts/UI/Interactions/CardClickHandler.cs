@@ -54,7 +54,7 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
         {
             if (card.GetState() == CardState.OnField)
             {
-                SpellController.Instance?.OnFieldCardClickedAsTarget(card);
+                TargetingManager.Instance?.OnFeildCardClikedAsTarget(card);
             }
             return;
         }

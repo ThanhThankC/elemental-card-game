@@ -77,7 +77,7 @@ public class SpellController : BaseCardController, ITargetableController
 
         if (pendingEffect.NeedsTarget)
         {
-            EnterTargetingMode();
+            EnterTargetingMode(instance);
             return;
         }
 
