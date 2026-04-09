@@ -13,14 +13,14 @@ public class BuffATKDEFEffect : ISpellEffect
         this.buffAmount = buffAmount;
     }
 
-    public bool CanActivate(SpellContext context)
+    public bool CanActivate(CardEffectContext context)
     {
         return context.PlayerMonsterZone.GetAllCards().Count > 0;
     }
 
-    public void Execute(SpellContext context)
+    public void Execute(CardEffectContext context)
     {
-        Card target = context.TargetMonster;
+        Card target = context.TargetCard;
         target.ModifyATK(buffAmount);
         target.ModifyDEF(buffAmount);
 

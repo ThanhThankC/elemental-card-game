@@ -13,7 +13,7 @@ public interface ISpellEffect
 
     bool NeedsTarget => TargetType != TargetType.None;
 
-    bool CanActivate(SpellContext context);
+    bool CanActivate(CardEffectContext context);
 
-    void Execute(SpellContext context);
+    void Execute(CardEffectContext context);
 }

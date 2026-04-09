@@ -4,15 +4,15 @@ public class DestroyMonsterEffect : ISpellEffect
 
     public TargetType TargetType => TargetType.MonsterOnField;
 
-    public bool CanActivate(SpellContext context)
+    public bool CanActivate(CardEffectContext context)
     {
         return context.PlayerMonsterZone.GetAllCards().Count > 0;
     }
 
-    public void Execute(SpellContext context)
+    public void Execute(CardEffectContext context)
     {
-        Card target = context.TargetMonster;
-        context.PlayerMonsterZone.RemoveCard(context.TargetMonster);
+        Card target = context.TargetCard;
+        context.PlayerMonsterZone.RemoveCard(context.TargetCard);
 
         CardSelectionManager.Instance?.NotifyCardSentToGraveyard(target);
 

@@ -4,12 +4,12 @@ public class DrawCardEffect : ISpellEffect
 
     public TargetType TargetType => TargetType.None;
 
-    public bool CanActivate(SpellContext context)
+    public bool CanActivate(CardEffectContext context)
     {
         return context.DeckManager.CanDrawCard();
     }
 
-    public void Execute(SpellContext context)
+    public void Execute(CardEffectContext context)
     {
         context.DeckManager.OnDrawCard();
     }

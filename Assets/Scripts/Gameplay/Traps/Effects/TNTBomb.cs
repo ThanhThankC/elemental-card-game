@@ -6,20 +6,14 @@ public class TNTBomb : ITrapEffect
 
     public TargetType TargetType => TargetType.MonsterOnField;
 
-    public bool CanActivate(SpellContext context)
+    public bool CanActivate(CardEffectContext context)
     {
-        TrapContext ctx = context as TrapContext;
-        if (ctx == null) return false;
-
-        return ctx.PlayerMonsterZone.GetAllCards().Count > 0;
+        return context.PlayerMonsterZone.GetAllCards().Count > 0;
     }
 
-    public void Execute(SpellContext context)
+    public void Execute(CardEffectContext context)
     {
-        TrapContext ctx = context as TrapContext;
-        if (ctx == null) return;
-
-        Card monster = context.TargetMonster;
+        Card monster = context.TargetCard;
         if (monster == null) return;
 
         bool removed = context.PlayerMonsterZone.RemoveCard(monster);
@@ -33,7 +27,7 @@ public class TNTBomb : ITrapEffect
         CardSelectionManager.Instance?.NotifyCardSentToGraveyard(monster);
         CardAnimator.AnimateToGraveyard(
             monster.transform,
-            ctx.GraveyardZone,
+            context.GraveyardZone,
             onComplete: () => monster.SetState(CardState.InGraveyard)
         );
     }

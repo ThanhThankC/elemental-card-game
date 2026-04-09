@@ -13,12 +13,12 @@ public class BuaHoMenhEffect : IContinuousSpellEffect
         this.buffAmount = buffAmount;
     }
 
-    public bool CanActivate(SpellContext context)
+    public bool CanActivate(CardEffectContext context)
     {
         return true;
     }
 
-    public void Execute(SpellContext context)
+    public void Execute(CardEffectContext context)
     {
         foreach (Card card in context.PlayerMonsterZone.GetAllCards())
         {
