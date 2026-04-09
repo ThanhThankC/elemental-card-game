@@ -50,18 +50,20 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (GamePhaseManager.Instance.IsInSpellTargeting())
+        GamePhaseManager gamePhaseManager = GamePhaseManager.Instance;
+
+        if (gamePhaseManager == null) return;
+        if (gamePhaseManager.IsInSpellTargeting())
         {
-            if (card.GetState() == CardState.OnField)
-            {
-                TargetingManager.Instance?.OnFeildCardClikedAsTarget(card);
-            }
+            TargetingManager targetingManager = TargetingManager.Instance;
+            if (targetingManager != null && targetingManager.IsValidTarget(card))
+                targetingManager.OnTargetCardClicked(card);
             return;
         }
 
-        if (!GamePhaseManager.Instance.CanInteractWithCards()) return;
+        if (!gamePhaseManager.CanInteractWithCards()) return;
         if (!isInteractable) return;
-        if (GamePhaseManager.Instance.IsInDiscardPhase() && card.GetState() != CardState.InHand) return;
+        if (gamePhaseManager.IsInDiscardPhase() && card.GetState() != CardState.InHand) return;
 
         if (Time.time - lastClickTime < clickCooldown)
         {

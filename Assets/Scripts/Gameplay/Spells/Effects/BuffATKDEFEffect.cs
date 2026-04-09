@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BuffATKDEFEffect : ISpellEffect
@@ -8,7 +6,7 @@ public class BuffATKDEFEffect : ISpellEffect
 
     public bool SendToGraveyardFirst => false;
 
-    public bool NeedsTarget => true;
+    public TargetType TargetType => TargetType.MonsterOnField;
 
     public BuffATKDEFEffect(int buffAmount)
     {

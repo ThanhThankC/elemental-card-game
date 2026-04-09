@@ -1,13 +1,10 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.tvOS;
 
 public class TNTBomb : ITrapEffect
 {
     public bool SendToGraveyardFirst => false;
 
-    public bool NeedsTarget => true;
+    public TargetType TargetType => TargetType.MonsterOnField;
 
     public bool CanActivate(SpellContext context)
     {

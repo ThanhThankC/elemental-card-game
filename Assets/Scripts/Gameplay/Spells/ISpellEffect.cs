@@ -9,7 +9,9 @@ public interface ISpellEffect
     /// </summary>
     bool SendToGraveyardFirst { get; }
 
-    bool NeedsTarget { get; }
+    TargetType TargetType { get; }
+
+    bool NeedsTarget => TargetType != TargetType.None;
 
     bool CanActivate(SpellContext context);
 

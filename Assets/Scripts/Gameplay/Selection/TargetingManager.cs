@@ -18,6 +18,7 @@ public class TargetingManager : MonoBehaviour
     }
 
     private ITargetableController activeController;
+    private TargetType currentTargetType;
 
     private void Awake()
     {
@@ -29,11 +30,12 @@ public class TargetingManager : MonoBehaviour
         instance = this;
     }
 
-    public void Register(ITargetableController controller)
+    public void Register(ITargetableController controller, TargetType targetType)
     {
         if (controller != null && activeController != controller)
         {
             activeController = controller;
+            currentTargetType = targetType;
         }
     }
 
@@ -42,8 +44,29 @@ public class TargetingManager : MonoBehaviour
         activeController = null;
     }
 
-    public void OnFeildCardClikedAsTarget(Card card)
+    public void OnTargetCardClicked(Card targetCard)
     {
-        activeController.OnFieldCardClickedAsTarget(card);
+        activeController.OnTargetSelected(targetCard);
+    }
+
+    public bool IsValidTarget(Card targetCard)
+    {
+        switch (currentTargetType)
+        {
+            case TargetType.MonsterOnField:
+                return targetCard.GetCardData().Type == CardType.Monster && targetCard.GetState() == CardState.OnField;
+            case TargetType.SpellOnField:
+                return targetCard.GetCardData().Type == CardType.Spell && targetCard.GetState() == CardState.OnField;
+            case TargetType.TrapOnField:
+                return targetCard.GetCardData().Type == CardType.Trap && targetCard.GetState() == CardState.OnField;
+            case TargetType.CardInHand:
+                return targetCard.GetState() == CardState.InHand;
+            case TargetType.AnyCardOnField:
+                return targetCard.GetState() == CardState.OnField;
+            case TargetType.AnyCard:
+                return true;
+            default:
+                return false;
+        }
     }
 }

@@ -6,9 +6,9 @@ public abstract class BaseCardController : MonoBehaviour
     protected ISpellEffect pendingEffect;
     public bool IsWaitingForTarget => pendingCard != null && pendingEffect != null;
 
-    protected void EnterTargetingMode(ITargetableController controller)
+    protected void EnterTargetingMode(ITargetableController controller, TargetType targetType)
     {
-        TargetingManager.Instance?.Register(controller);
+        TargetingManager.Instance?.Register(controller, targetType);
         GamePhaseManager.Instance?.SetPhase(GamePhase.SpellTargeting);
     }
 

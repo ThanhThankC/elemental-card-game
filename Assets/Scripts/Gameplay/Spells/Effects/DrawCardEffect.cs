@@ -1,10 +1,8 @@
-using UnityEngine;
-
 public class DrawCardEffect : ISpellEffect
 {
     public bool SendToGraveyardFirst => true;
 
-    public bool NeedsTarget => false;
+    public TargetType TargetType => TargetType.None;
 
     public bool CanActivate(SpellContext context)
     {

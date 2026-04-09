@@ -5,7 +5,7 @@ public class MadCyclone : ITrapEffect
 {
     public bool SendToGraveyardFirst => false;
 
-    public bool NeedsTarget => false;
+    public TargetType TargetType => TargetType.None;
 
     public bool CanActivate(SpellContext context)
     {

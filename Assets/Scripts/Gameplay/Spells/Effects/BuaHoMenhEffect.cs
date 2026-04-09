@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BuaHoMenhEffect : IContinuousSpellEffect
@@ -8,7 +6,7 @@ public class BuaHoMenhEffect : IContinuousSpellEffect
 
     public bool SendToGraveyardFirst => false;
 
-    public bool NeedsTarget => false;
+    public TargetType TargetType => TargetType.None;
 
     public BuaHoMenhEffect(int buffAmount)
     {

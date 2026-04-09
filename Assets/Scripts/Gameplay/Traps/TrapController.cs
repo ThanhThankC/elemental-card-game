@@ -49,7 +49,7 @@ public class TrapController : BaseCardController, ITargetableController
             OnRequestFromField();
     }
 
-    public void OnFieldCardClickedAsTarget(Card targetCard)
+    public void OnTargetSelected(Card targetCard)
     {
         if (pendingCard == null || pendingEffect == null) return;
         if (targetCard == null) return;
@@ -135,7 +135,7 @@ public class TrapController : BaseCardController, ITargetableController
         {
             if (pendingEffect.NeedsTarget)
             {
-                EnterTargetingMode(instance);
+                EnterTargetingMode(instance, pendingEffect.TargetType);
                 return;
             }
 

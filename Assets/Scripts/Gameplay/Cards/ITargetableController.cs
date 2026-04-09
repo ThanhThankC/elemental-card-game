@@ -1,5 +1,5 @@
 public interface ITargetableController : ICardController
 {
-    void OnFieldCardClickedAsTarget(Card targetCard);
+    void OnTargetSelected(Card targetCard);
     void CancelTargeting();
 }

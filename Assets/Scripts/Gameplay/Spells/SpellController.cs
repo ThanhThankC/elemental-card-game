@@ -77,7 +77,7 @@ public class SpellController : BaseCardController, ITargetableController
 
         if (pendingEffect.NeedsTarget)
         {
-            EnterTargetingMode(instance);
+            EnterTargetingMode(instance, pendingEffect.TargetType);
             return;
         }
 
@@ -86,7 +86,7 @@ public class SpellController : BaseCardController, ITargetableController
 
     protected override void OnRequestFromField() { }
 
-    public void OnFieldCardClickedAsTarget(Card targetCard)
+    public void OnTargetSelected(Card targetCard)
     {
         if (pendingCard == null || pendingEffect == null) return;
         if (targetCard == null) return;

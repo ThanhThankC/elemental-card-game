@@ -1,12 +1,8 @@
-using DG.Tweening;
-using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
-
 public class DestroyMonsterEffect : ISpellEffect
 {
     public bool SendToGraveyardFirst => false;
 
-    public bool NeedsTarget => true;
+    public TargetType TargetType => TargetType.MonsterOnField;
 
     public bool CanActivate(SpellContext context)
     {
