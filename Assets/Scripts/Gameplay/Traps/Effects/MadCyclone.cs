@@ -9,17 +9,11 @@ public class MadCyclone : ITrapEffect
 
     public bool CanActivate(CardEffectContext context)
     {
-        //TrapContext ctx = context as TrapContext;
-        //if (ctx == null) return false;
-
         return context.PlayerMonsterZone.GetAllCards().Count > 0;
     }
 
     public void Execute(CardEffectContext context)
     {
-        //TrapContext ctx = context as TrapContext;
-        //if (ctx == null) return;
-
         List<Card> monsters = new List<Card>(context.PlayerMonsterZone.GetAllCards());
 
         foreach (Card monster in monsters)
