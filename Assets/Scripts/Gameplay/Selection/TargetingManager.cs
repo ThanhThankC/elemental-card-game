@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TargetingManager : MonoBehaviour
@@ -17,7 +15,7 @@ public class TargetingManager : MonoBehaviour
         }
     }
 
-    private ITargetableController activeController;
+    private BaseCardController activeController;
     private TargetType currentTargetType;
 
     private void Awake()
@@ -30,7 +28,7 @@ public class TargetingManager : MonoBehaviour
         instance = this;
     }
 
-    public void Register(ITargetableController controller, TargetType targetType)
+    public void Register(BaseCardController controller, TargetType targetType)
     {
         if (controller != null && activeController != controller)
         {
@@ -46,6 +44,8 @@ public class TargetingManager : MonoBehaviour
 
     public void OnTargetCardClicked(Card targetCard)
     {
+        if (activeController == null) return;
+        if (!IsValidTarget(targetCard)) return;
         activeController.OnTargetSelected(targetCard);
     }
 
@@ -68,5 +68,12 @@ public class TargetingManager : MonoBehaviour
             default:
                 return false;
         }
+    }
+
+    private void Update()
+    {
+        //TODO
+        //if (Input.GetKeyDown(KeyCode.Escape) && GamePhaseManager.Instance.IsInSpellTargeting())
+        //    activeController?.CancelTargeting();
     }
 }

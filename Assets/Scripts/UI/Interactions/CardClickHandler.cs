@@ -55,9 +55,7 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
         if (gamePhaseManager == null) return;
         if (gamePhaseManager.IsInSpellTargeting())
         {
-            TargetingManager targetingManager = TargetingManager.Instance;
-            if (targetingManager != null && targetingManager.IsValidTarget(card))
-                targetingManager.OnTargetCardClicked(card);
+            TargetingManager.Instance?.OnTargetCardClicked(card);
             return;
         }
 

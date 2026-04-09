@@ -1,13 +1,9 @@
 using UnityEngine;
 
-public class TrapController : BaseCardController, ITargetableController
+public class TrapController : BaseCardController, ICardController
 {
     [Header("References")]
-    [SerializeField] private MonsterZone playerMonsterZone;
     [SerializeField] private TrapZone trapZone;
-    [SerializeField] private HandLayoutManager handLayout;
-    [SerializeField] private Transform graveyardZone;
-    [SerializeField] private DeckManager deckManager;
 
     [Header("Animation")]
     [SerializeField] private float setDuration = 0.4f;
@@ -47,31 +43,6 @@ public class TrapController : BaseCardController, ITargetableController
             OnRequestFromHand();
         else if (trapCard.GetState() == CardState.OnField)
             OnRequestFromField();
-    }
-
-    public void OnTargetSelected(Card targetCard)
-    {
-        if (pendingCard == null || pendingEffect == null) return;
-        if (targetCard == null) return;
-
-        SpellContext context = BuildContext(targetCard);
-        if (!pendingEffect.CanActivate(context))
-        {
-            Debug.LogWarning($"[TrapController] Invalid target: {targetCard.GetCardData().GetCardName()}");
-            return;
-        }
-
-        pendingEffect.Execute(context);
-        SendToGraveyard(pendingCard, handLayout, graveyardZone);
-
-        pendingCard = null;
-        pendingEffect = null;
-        GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
-    }
-
-    public void CancelTargeting()
-    {
-        throw new System.NotImplementedException();
     }
 
     protected override bool ValidateCard(Card card) => card.GetCardData().Type == CardType.Trap;
@@ -122,7 +93,7 @@ public class TrapController : BaseCardController, ITargetableController
             return;
         }
 
-        TrapContext context = BuildContext(null) as TrapContext;
+        CardEffectContext context = BuildContext(null);
         if (!pendingEffect.CanActivate(context))
         {
             Debug.LogWarning($"[TrapController] Cannot activate: {data.GetCardName()}");
@@ -143,7 +114,7 @@ public class TrapController : BaseCardController, ITargetableController
         });
     }
 
-    private void ExecuteTrap(TrapContext context)
+    private void ExecuteTrap(CardEffectContext context)
     {
         Card card = pendingCard;      
         ISpellEffect effect = pendingEffect;
@@ -155,17 +126,6 @@ public class TrapController : BaseCardController, ITargetableController
         trapZone.RemoveCard(card);
         SendToGraveyard(card, handLayout, graveyardZone);
         GamePhaseManager.Instance.SetPhase(GamePhase.Idle); 
-    }
-
-    protected override SpellContext BuildContext(Card targetCard)
-    {
-        return new TrapContext
-        {
-            SpellCard = pendingCard,
-            TargetMonster = targetCard,
-            PlayerMonsterZone = playerMonsterZone,
-            GraveyardZone = graveyardZone
-        };
     }
 
     public void RequestRecall(Card trapCard)

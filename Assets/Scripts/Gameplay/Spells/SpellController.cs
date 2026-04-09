@@ -1,13 +1,9 @@
 using UnityEngine;
 
-public class SpellController : BaseCardController, ITargetableController
+public class SpellController : BaseCardController, ICardController
 {
     [Header("References")]
-    [SerializeField] private MonsterZone playerMonsterZone;
     [SerializeField] private SpellZone spellZone;
-    [SerializeField] private HandLayoutManager handLayout;
-    [SerializeField] private Transform graveyardZone;
-    [SerializeField] private DeckManager deckManager;
 
     [Header("Animation")]
     [SerializeField] private float setDuration = 0.4f;
@@ -52,7 +48,7 @@ public class SpellController : BaseCardController, ITargetableController
         }
 
         //TODO refactor: In future spellCard required both: NonTarget + Target ??;
-        SpellContext context = BuildContext(null);
+        CardEffectContext context = BuildContext(null);
         if (!pendingEffect.CanActivate(context))
         {
             Debug.LogWarning($"[SpellController] Cannot activate: {data.GetCardName()}");
@@ -86,50 +82,7 @@ public class SpellController : BaseCardController, ITargetableController
 
     protected override void OnRequestFromField() { }
 
-    public void OnTargetSelected(Card targetCard)
-    {
-        if (pendingCard == null || pendingEffect == null) return;
-        if (targetCard == null) return;
-
-        SpellContext context = BuildContext(targetCard);
-        if (!pendingEffect.CanActivate(context))
-        {
-            Debug.LogWarning($"[SpellController] Invalid target: {targetCard.GetCardData().GetCardName()}");
-            return;
-        }
-
-        pendingEffect.Execute(context);
-        SendToGraveyard(pendingCard, handLayout, graveyardZone);
-
-        pendingCard = null;
-        pendingEffect = null;
-        GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
-    }
-
-    public void CancelTargeting()
-    {
-        if (pendingCard == null || pendingEffect == null) return;
-
-        Debug.Log("[SpellController] Targeting cancelled");
-        pendingCard = null;
-        pendingEffect = null;
-        GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
-        CardActionMenu.Instance?.ShowMenu(CardSelectionManager.Instance?.CurrentHandCard);
-    }
-
-    protected override SpellContext BuildContext(Card target)
-    {
-        return new SpellContext
-        {
-            SpellCard = pendingCard,
-            TargetMonster = target,
-            PlayerMonsterZone = playerMonsterZone,
-            DeckManager = deckManager,
-            GraveyardZone = graveyardZone
-        };
-    }
-
-    private void ActiveContinuous(IContinuousSpellEffect continuousEffect, SpellContext context)
+    private void ActiveContinuous(IContinuousSpellEffect continuousEffect, CardEffectContext context)
     {
         int slotIndex = spellZone.FindEmptySlot();
         Transform targetSlot = spellZone.GetSlotTransform(slotIndex);
@@ -169,7 +122,7 @@ public class SpellController : BaseCardController, ITargetableController
         pendingEffect = null;
     }
 
-    private void ExecuteNormal(SpellContext context)
+    private void ExecuteNormal(CardEffectContext context)
     {
         if (pendingEffect.SendToGraveyardFirst)
             SendToGraveyard(pendingCard, handLayout, graveyardZone);
@@ -182,13 +135,5 @@ public class SpellController : BaseCardController, ITargetableController
         pendingCard = null;
         pendingEffect = null;
         GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
-    }
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) && IsWaitingForTarget)
-        {
-            CancelTargeting();
-        }
     }
 }
