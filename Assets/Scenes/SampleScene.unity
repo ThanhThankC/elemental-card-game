@@ -2593,10 +2593,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMonsterZone: {fileID: 2120609339}
-  trapZone: {fileID: 637228050}
   handLayout: {fileID: 1907012643}
   graveyardZone: {fileID: 572037458}
   deckManager: {fileID: 1982424320}
+  trapZone: {fileID: 637228050}
   setDuration: 0.4
   flipDuration: 0.4
 --- !u!1 &811395020
@@ -2993,10 +2993,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerMonsterZone: {fileID: 2120609339}
-  spellZone: {fileID: 356010167}
   handLayout: {fileID: 1907012643}
   graveyardZone: {fileID: 572037458}
   deckManager: {fileID: 1982424320}
+  spellZone: {fileID: 356010167}
   setDuration: 0.4
 --- !u!1 &973422651
 GameObject:
@@ -5372,7 +5372,9 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cb2cd0f600f4dab43accff7ef9f2a792, type: 2}
   - {fileID: 11400000, guid: ec72f2880efbd07468dfdf91868f417c, type: 2}
   - {fileID: 11400000, guid: ec72f2880efbd07468dfdf91868f417c, type: 2}
-  - {fileID: 11400000, guid: ec72f2880efbd07468dfdf91868f417c, type: 2}
+  - {fileID: 11400000, guid: fec5da99671b2ac4b9757bff92f0b254, type: 2}
+  - {fileID: 11400000, guid: fec5da99671b2ac4b9757bff92f0b254, type: 2}
+  - {fileID: 11400000, guid: fec5da99671b2ac4b9757bff92f0b254, type: 2}
   drawDuration: 0.5
   drawDelay: 0.15
   deckCardBack: {fileID: 775997047}
@@ -7741,7 +7743,7 @@ MonoBehaviour:
   cardBackground: {fileID: 7815727475564388081}
   monsterColor: {r: 1, g: 0.99475473, b: 0.7377358, a: 1}
   spellColor: {r: 0.7057771, g: 0.96981126, b: 0.5617586, a: 1}
-  trapCollor: {r: 1, g: 0, b: 1, a: 1}
+  trapCollor: {r: 0.84313726, g: 0.5882353, b: 1, a: 1}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

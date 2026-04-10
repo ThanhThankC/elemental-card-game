@@ -4,4 +4,5 @@ public enum TrapEffectID
 
     MadCyclone,
     TNTBomb,
+    SpellCuttingScissors,
 }

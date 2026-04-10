@@ -10,4 +10,5 @@ public class CardEffectContext
     public MonsterZone PlayerMonsterZone { get; set; }
     public DeckManager DeckManager { get; set; }
     public Transform GraveyardZone { get; set; }
+    public HandLayoutManager HandLayout { get; set; }
 }

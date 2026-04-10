@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
-  m_Name: Special_BombTNT
+  m_Name: Trap_SpellCuttingScissors
   m_EditorClassIdentifier: 
-  cardID: T_02
-  cardNameVN: Bomb TNT
-  cardNameEN: TNT Bomb
+  cardID: T_03
+  cardNameVN: "K\xE9o c\u1EAFt b\xE0i ph\xE9p"
+  cardNameEN: Spell-cutting scissors
   cardType: 2
-  cardArtwork: {fileID: 21300000, guid: 2204ecdf3c9e2714d95b5033beb318fc, type: 3}
-  stars: 0
+  cardArtwork: {fileID: 21300000, guid: 371b7378a9a811840927632685bfc61c, type: 3}
+  stars: 1
   baseATK: 0
   baseDEF: 0
   elements: 
@@ -26,11 +26,9 @@ MonoBehaviour:
   spellType: 0
   spellEffectID: 0
   spellBuffAmount: 0
-  trapEffectID: 2
-  normalEffectDescVN: "Khi k\xEDch ho\u1EA1t: L\u1EADp t\u1EE9c ti\xEAu di\u1EC7t
-    m\u1ED9t qu\xE1i th\xFA m\u1EE5c ti\xEAu. \u0110\xF2n \u0111\xE1nh n\xE0y xuy\xEAn
-    th\u1EA5u m\u1ECDi l\u1EDBp gi\xE1p."
-  normalEffectDescEN: 'When activated: Instantly destroy 1 target monster. This effect
-    pierces through all armor.'
+  trapEffectID: 3
+  normalEffectDescVN: "C\xF3 th\u1EC3 c\u1EAFt m\u1ED9t l\xE1 b\xE0i ph\xE9p b\u1EA5t
+    k\u1EF3."
+  normalEffectDescEN: 
   specialEffectDescVN: 
   specialEffectDescEN: 

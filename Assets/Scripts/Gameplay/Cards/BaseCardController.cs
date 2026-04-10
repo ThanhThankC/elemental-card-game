@@ -66,7 +66,8 @@ public abstract class BaseCardController : MonoBehaviour
             TargetCard = target,
             PlayerMonsterZone = playerMonsterZone,
             DeckManager = deckManager,
-            GraveyardZone = graveyardZone
+            GraveyardZone = graveyardZone,
+            HandLayout = handLayout
         };
     }
 

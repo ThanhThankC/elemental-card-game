@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 96bdc6e5eaa48db459b693746ab41a1e, type: 3}
-  m_Name: Special_MadCyclone
+  m_Name: Trap_MadCyclone
   m_EditorClassIdentifier: 
   cardID: T_01
   cardNameVN: "C\u01A1n l\u1ED1c \u0111i\xEAn cu\u1ED3ng"
