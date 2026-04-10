@@ -19,7 +19,7 @@ public class TNTBomb : ITrapEffect
         bool removed = context.PlayerMonsterZone.RemoveCard(monster);
         if (!removed)
         {
-            Debug.LogWarning($"[MadCyclone] Failed to remove: {monster.GetCardData().name}");
+            Debug.LogWarning($"[TNTBomb] Failed to remove: {monster.GetCardData().name}");
             return;
         }
 
