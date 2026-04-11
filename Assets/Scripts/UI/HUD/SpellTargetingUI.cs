@@ -27,7 +27,7 @@ public class SpellTargetingUI : MonoBehaviour
 
     private void OnPhaseChanged(GamePhase newPhase)
     {
-        bool isTargeting = newPhase == GamePhase.SpellTargeting;
+        bool isTargeting = newPhase == GamePhase.Targeting;
         hintPanel.SetActive(isTargeting);
     }
 }

@@ -8,7 +8,7 @@ public enum GamePhase
     DiscardSelection,
     Summoning,
     Setting,
-    SpellTargeting,
+    Targeting,
     Battle,
     End
 }
@@ -34,6 +34,16 @@ public class GamePhaseManager : MonoBehaviour
 
     private GamePhase currentPhase = GamePhase.Idle;
 
+    private void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        instance = this;
+    }
+
     public void SetPhase(GamePhase newState)
     {
         if (currentPhase == newState) return;
@@ -46,6 +56,6 @@ public class GamePhaseManager : MonoBehaviour
     public bool CanInteractWithCards() => currentPhase == GamePhase.Idle || currentPhase == GamePhase.DiscardSelection;
     public bool CanDragCards() => currentPhase == GamePhase.Idle;
     public bool IsInDiscardPhase() => currentPhase == GamePhase.DiscardSelection;
-    public bool IsInSpellTargeting() => currentPhase == GamePhase.SpellTargeting; 
+    public bool IsInTargeting() => currentPhase == GamePhase.Targeting; 
     public GamePhase CurrentState => currentPhase;
 }

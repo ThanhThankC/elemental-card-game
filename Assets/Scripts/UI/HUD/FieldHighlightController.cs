@@ -34,7 +34,7 @@ public class FieldHighlightController : MonoBehaviour
 
     private void OnPhaseChanged(GamePhase newPhase)
     {
-        bool active = newPhase == GamePhase.SpellTargeting;
+        bool active = newPhase == GamePhase.Targeting;
 
         var cards = playerMonsterZone.GetAllCards();
         foreach (Card card in cards)
