@@ -28,12 +28,6 @@ public class SpellZone : FieldZone
         return CardType.Spell;
     }
 
-    public override bool RemoveCard(Card card)
-    {
-        //TODO 
-        return base.RemoveCard(card);
-    }
-
     public bool PlaceSpell(Card card, int slotIndex = -1)
     {
         if (!CanPlaceCard(card)) return false;

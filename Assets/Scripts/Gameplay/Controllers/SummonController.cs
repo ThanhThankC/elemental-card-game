@@ -179,7 +179,8 @@ public class SummonController : MonoBehaviour
 
         if (handLayout != null)
         {
-            handLayout.RemoveCard(monster.transform);
+            bool removed = handLayout.RemoveCard(monster.transform);
+            if (!removed) return;
         }
 
         bool isCompleted = false;

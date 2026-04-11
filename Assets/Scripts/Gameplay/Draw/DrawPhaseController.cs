@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 public class DrawPhaseController : MonoBehaviour
@@ -64,7 +65,11 @@ public class DrawPhaseController : MonoBehaviour
         {
             if (card != null)
             {
-                handLayout.RemoveCard(card.transform);
+                if (handLayout != null)
+                {
+                    bool removed = handLayout.RemoveCard(card.transform);
+                    if (!removed) return;
+                }
                 CardSelectionManager.Instance?.NotifyCardSentToGraveyard(card);
 
                 CardAnimator.AnimateToGraveyard(

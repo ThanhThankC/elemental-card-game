@@ -1,3 +1,4 @@
+using System.Threading;
 using UnityEngine;
 
 public class TrapController : BaseCardController, ICardController
@@ -62,7 +63,11 @@ public class TrapController : BaseCardController, ICardController
         }
 
         GamePhaseManager.Instance.SetPhase(GamePhase.Setting);
-        handLayout?.RemoveCard(pendingCard.transform);
+        if (handLayout != null)
+        {
+            bool removed = handLayout.RemoveCard(pendingCard.transform);
+            if (!removed) return;
+        }
 
         Card cardToPlace = pendingCard;
 
@@ -123,7 +128,12 @@ public class TrapController : BaseCardController, ICardController
         pendingEffect = null;
 
         effect.Execute(context);
-        trapZone.RemoveCard(card);
+        bool removed = trapZone.RemoveCard(card);
+        if (!removed)
+        {
+            Debug.LogWarning($"[TrapController] Failed to remove: {card.GetCardData().name}");
+            return;
+        }
         SendToGraveyard(card, handLayout, graveyardZone);
         GamePhaseManager.Instance.SetPhase(GamePhase.Idle); 
     }
@@ -153,7 +163,8 @@ public class TrapController : BaseCardController, ICardController
             onComplete: () =>
             {
                 handLayout.AddCard(cardToPlace.transform);
-                trapZone.RemoveCard(cardToPlace);
+                bool removed = trapZone.RemoveCard(cardToPlace);
+                if (!removed) return;
                 cardToPlace.SetState(CardState.InHand);
                 GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
             }

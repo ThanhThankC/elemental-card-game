@@ -1,3 +1,5 @@
+using UnityEngine;
+
 public class DestroyMonsterEffect : ISpellEffect
 {
     public bool SendToGraveyardFirst => false;
@@ -12,7 +14,12 @@ public class DestroyMonsterEffect : ISpellEffect
     public void Execute(CardEffectContext context)
     {
         Card target = context.TargetCard;
-        context.PlayerMonsterZone.RemoveCard(context.TargetCard);
+        bool removed = context.PlayerMonsterZone.RemoveCard(target);
+        if (!removed)
+        {
+            Debug.LogWarning($"[DestroyMonsterEffect] Failed to remove: {target.GetCardData().name}");
+            return;
+        }
 
         CardSelectionManager.Instance?.NotifyCardSentToGraveyard(target);
 

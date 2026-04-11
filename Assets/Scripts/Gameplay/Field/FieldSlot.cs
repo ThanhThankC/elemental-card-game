@@ -39,12 +39,12 @@ public class FieldSlot
     /// <summary>
     /// [TKC] Return card to move.
     /// </summary>
-    public void RemoveCard()
+    public bool RemoveCard()
     {
-        //Card removedCard = currentCard;
+        if (currentCard == null) return false;
         currentCard = null;
         isFaceDown = false;
-        //return removedCard;
+        return true;
     }
 
     /// <summary>

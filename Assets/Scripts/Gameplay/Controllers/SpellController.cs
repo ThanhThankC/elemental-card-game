@@ -99,7 +99,8 @@ public class SpellController : BaseCardController, ICardController
 
         if (handLayout != null)
         {
-            handLayout.RemoveCard(pendingCard.transform);
+            bool removed = handLayout.RemoveCard(pendingCard.transform);
+            if (!removed) return;
         }
 
         Card cardToPlace = pendingCard;

@@ -35,16 +35,17 @@ public class HandLayoutManager : MonoBehaviour
         OnHandCountChanged?.Invoke();
     }
 
-    public void RemoveCard(Transform card)
+    public bool RemoveCard(Transform card)
     {
-        if (card == null) return;
+        if (card == null) return false;
 
-        if (cards.Remove(card))
+        bool removed = cards.Remove(card);
+        if (removed)
         {
             ArrangeCards(true);
+            OnHandCountChanged?.Invoke();
         }
-
-        OnHandCountChanged?.Invoke();
+        return removed;
     }
 
     public void SwapCards(Card a, Card b)

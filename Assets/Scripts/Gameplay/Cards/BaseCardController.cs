@@ -1,4 +1,5 @@
 using UnityEngine;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public abstract class BaseCardController : MonoBehaviour
 {
@@ -51,7 +52,12 @@ public abstract class BaseCardController : MonoBehaviour
 
     protected void SendToGraveyard(Card card, HandLayoutManager handLayout, Transform graveyardZone)
     {
-        handLayout.RemoveCard(card.transform);
+        bool removed = handLayout.RemoveCard(card.transform);
+        if (!removed)
+        {
+            Debug.LogWarning($"[BaseCardController] Failed to remove: {card.GetCardData().name}");
+            return;
+        }
         //TODO: Add disappear effect
         card.SetState(CardState.InGraveyard);
         card.transform.position = graveyardZone.position;

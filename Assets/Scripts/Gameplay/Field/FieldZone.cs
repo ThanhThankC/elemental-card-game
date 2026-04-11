@@ -50,13 +50,15 @@ public abstract class FieldZone : MonoBehaviour
         return true;
     }
 
-    public virtual void RemoveCard(int slotIndex)
+    public virtual bool RemoveCard(int slotIndex)
     {
         if (!IsValidSlotIndex(slotIndex))
-            { Debug.LogWarning($"[{GetType().Name}] Invalid slot index: {slotIndex}"); }
-        slots[slotIndex].RemoveCard();
+            { Debug.LogWarning($"[{GetType().Name}] Invalid slot index: {slotIndex}"); return false; }
 
-        //return slots[slotIndex].RemoveCard();
+        if (slots[slotIndex].IsEmpty)
+            { Debug.LogWarning($"[{GetType().Name}] Slot {slotIndex} is already empty"); return false; }
+
+        return slots[slotIndex].RemoveCard();
     }
 
     public virtual bool RemoveCard(Card card)
@@ -64,10 +66,13 @@ public abstract class FieldZone : MonoBehaviour
         if (card == null) return false;
 
         int index = GetSlotIndex(card);
-        if (index == -1) return false;
+        if (index == -1)
+        {
+            Debug.LogWarning($"[{GetType().Name}] Card not found in any slot");
+            return false;
+        }
 
-        RemoveCard(index);
-        return true;
+        return RemoveCard(index);
     }
 
     public int GetSlotIndex(Card card)
