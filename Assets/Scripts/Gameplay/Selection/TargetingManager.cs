@@ -33,8 +33,8 @@ public class TargetingManager : MonoBehaviour
         if (controller != null && activeController != controller)
         {
             activeController = controller;
-            currentTargetType = targetType;
         }
+        currentTargetType = targetType;
     }
 
     public void UnRegister()
