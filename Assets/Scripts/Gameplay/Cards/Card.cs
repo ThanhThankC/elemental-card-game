@@ -46,7 +46,7 @@ public class Card : MonoBehaviour
     [SerializeField] private Image cardBackground;
     [SerializeField] private Color monsterColor = Color.yellow;
     [SerializeField] private Color spellColor = Color.green;
-    [SerializeField] private Color trapCollor = Color.magenta;
+    [SerializeField] private Color trapColor = Color.magenta;
 
     public event Action OnStatsChanged;
 
@@ -123,7 +123,7 @@ public class Card : MonoBehaviour
                 cardBackground.color = spellColor;
                 break;
             case CardType.Trap:
-                cardBackground.color = trapCollor;
+                cardBackground.color = trapColor;
                 break;
         }
     }
