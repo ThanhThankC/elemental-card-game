@@ -126,15 +126,32 @@ public class SpellController : BaseCardController, ICardController
     private void ExecuteNormal(CardEffectContext context)
     {
         if (pendingEffect.SendToGraveyardFirst)
-            SendToGraveyard(pendingCard, handLayout, graveyardZone);
+        {
+            handLayout.RemoveCard(pendingCard.transform);
+            SendToGraveyard(pendingCard, graveyardZone);
+        }
 
         pendingEffect.Execute(context);
 
         if (!pendingEffect.SendToGraveyardFirst)
-            SendToGraveyard(pendingCard, handLayout, graveyardZone);
+        {
+            handLayout.RemoveCard(pendingCard.transform);
+            SendToGraveyard(pendingCard, graveyardZone);
+        }
 
         pendingCard = null;
         pendingEffect = null;
         GamePhaseManager.Instance.SetPhase(GamePhase.Idle);
+    }
+
+    protected override void OnAfterTargetExecute(Card card, CardEffectContext context)
+    {
+        bool removed = handLayout.RemoveCard(card.transform);
+        if (!removed)
+        {
+            Debug.LogWarning($"[SpellController] Failed to remove: {card.GetCardData().name}");
+            return;
+        }
+        SendToGraveyard(card, graveyardZone);
     }
 }

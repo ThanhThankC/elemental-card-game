@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public abstract class BaseCardController : MonoBehaviour
 {
@@ -25,7 +24,7 @@ public abstract class BaseCardController : MonoBehaviour
         }
 
         pendingEffect.Execute(context);
-        SendToGraveyard(pendingCard, handLayout, graveyardZone);
+        OnAfterTargetExecute(pendingCard, context);
 
         pendingCard = null;
         pendingEffect = null;
@@ -47,23 +46,18 @@ public abstract class BaseCardController : MonoBehaviour
     protected void EnterTargetingMode(BaseCardController controller, TargetType targetType)
     {
         TargetingManager.Instance?.Register(controller, targetType);
-        GamePhaseManager.Instance?.SetPhase(GamePhase.SpellTargeting);
+        GamePhaseManager.Instance?.SetPhase(GamePhase.Targeting);
     }
 
-    protected void SendToGraveyard(Card card, HandLayoutManager handLayout, Transform graveyardZone)
+    protected void SendToGraveyard(Card card, Transform graveyardZone)
     {
-        bool removed = handLayout.RemoveCard(card.transform);
-        if (!removed)
-        {
-            Debug.LogWarning($"[BaseCardController] Failed to remove: {card.GetCardData().name}");
-            return;
-        }
         //TODO: Add disappear effect
         card.SetState(CardState.InGraveyard);
         card.transform.position = graveyardZone.position;
         card.gameObject.SetActive(false);
-        CardSelectionManager.Instance?.NotifyCardSentToGraveyard(card);    
+        CardSelectionManager.Instance?.NotifyCardSentToGraveyard(card);
     }
+
     protected CardEffectContext BuildContext(Card target)
     {
         return new CardEffectContext
@@ -80,4 +74,5 @@ public abstract class BaseCardController : MonoBehaviour
     protected abstract bool ValidateCard(Card card);
     protected abstract void OnRequestFromHand();
     protected abstract void OnRequestFromField();
+    protected virtual void OnAfterTargetExecute(Card card, CardEffectContext context) { }
 }
