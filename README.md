@@ -2,7 +2,7 @@
 
 A Yugioh-inspired turn-based card battle game built with **Unity 2022.3 (C#)**, targeting **Android**. Battle with elemental monsters, cast spells, and set traps across a strategic field system.
 
-> **Work in progress** — approximately 30-35% complete.
+> **Work in progress** — approximately 34-40% complete.
 
 ---
 
@@ -22,7 +22,7 @@ The game features an **elemental system** where monsters can belong to one or mo
 - [x] Tribute system (sacrifice monsters to summon high-tier cards)
 - [x] Send cards to Graveyard
 - [x] Spell card activation system
-- [ ] Trap card system *(in progress)*
+- [x] Trap card system
 - [ ] Combat / battle phase
 - [ ] HP damage system
 - [ ] AI opponent
@@ -95,40 +95,42 @@ Each player's side of the field contains:
 ---
 
 ## Project Structure
+
 ```
 Assets/
 ├── Fonts/
 └── Scripts/
     ├── Core/
-    │   ├── Config/          # CardVisualConfig, GameRules
-    │   ├── Data/            # CardData
-    │   ├── Enums/           # BuffType, CardState, CardType, ElementType, MonsterTier, SpellEffectID
-    │   ├── Manager/         # GamePhaseManager
-    │   └── Utils/           # CardAnimator, IconDatabase, ObjectPool
+    │   ├── Config/       # CardVisualConfig, GameRules
+    │   ├── Data/         # CardData
+    │   ├── Enums/        # BuffType, CardState, CardType, ElementType, MonsterTier, SpellEffectID, TrapEffectID, TargetType
+    │   ├── Manager/      # GamePhaseManager
+    │   └── Utils/        # CardAnimator, IconDatabase, ObjectPool
     └── Gameplay/
-        ├── Cards/           # Card, CardHighlighter, CardFlip
-        ├── Deck/            # DeckManager, DiscardManager
-        ├── Draw/            # DrawPhaseController, DrawPhaseUI
-        ├── Field/           # FieldSlot, FieldZone, MonsterZone, SpellZone, TrapZone
-        ├── Selection/       # CardSelectionManager, SelectionContext, SelectionValidator
-        ├── Spells/
-        │   ├── Effects/     # BuaHoMenhEffect, BuffATKDEF, DestroyMonster, DrawCardEfects
-        │   ├── IContinuousSpellEffect, ISpellEffect
-        │   └── SpellContext, SpellController, SpellEffectRegistry, ContinuousSpellManager
-        ├── Summon/          # SummonController
-        ├── Trap/            # TrapController
+        ├── Cards/        # Card, CardHighlighter, CardFlip, BaseCardController, ICardController
+        ├── CardEffects/
+        │   ├── Spells/   # BuffATKDEFEffect, BuaHoMenhEffect, DestroyMonsterEffect, DrawCardEffect
+        │   ├── Traps/    # TNTBomb, MadCyclone, SpellCuttingScissors
+        │   └── # ISpellEffect, ITrapEffect, IContinuousSpellEffect, CardEffectContext
+        │     # SpellEffectRegistry, TrapEffectRegistry
+        ├── ContinuousSpells/ # ContinuousSpellManager
+        ├── Controllers/  # SpellController, TrapController
+        ├── Deck/         # DeckManager, DiscardManager
+        ├── Draw/         # DrawPhaseController, DrawPhaseUI
+        ├── Field/        # FieldSlot, FieldZone, MonsterZone, SpellZone, TrapZone
+        ├── Selection/    # CardSelectionManager, SelectionContext, SelectionValidator
+        ├── Summon/       # SummonController
         └── UI/
-            ├── HUD/         # FieldHighlightController, SpellTargetingUI, CardDetailPanel
+            ├── HUD/          # FieldHighlightController, SpellTargetingUI, CardDetailPanel
             ├── Interactions/ # CardClickHandler, CardDragHandler, CardTransformHelper
-            ├── Layouts/     # HandLayoutManager
-            └── Menus/       # CardActionMenu
+            ├── Layouts/      # HandLayoutManager
+            └── Menus/        # CardActionMenu
 ```
 
 ---
 
 ## Roadmap
 
-- [ ] Trap card system
 - [ ] Combat / battle phase
 - [ ] HP damage system
 - [ ] AI opponent
