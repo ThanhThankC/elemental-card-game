@@ -288,7 +288,7 @@ public class Card : MonoBehaviour
         }
     }
 
-    public void ResetStas()
+    public void ResetStats()
     {
         if (cardData.IsMonster())
         {

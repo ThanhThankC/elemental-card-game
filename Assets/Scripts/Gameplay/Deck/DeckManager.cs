@@ -228,14 +228,10 @@ public class DeckManager : MonoBehaviour
 
     private void Update()
     {
+    #if UNITY_EDITOR
         if (Input.GetKeyDown(KeyCode.Space))
         {
             OnDrawCard();
-        }
-
-        if (Input.GetKeyDown(KeyCode.D))
-        {
-            OnDecardCard();
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -243,11 +239,11 @@ public class DeckManager : MonoBehaviour
             SetGameSpeed(1.0f);
         }
 
-
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
             SetGameSpeed(0.1f);
         }
+    #endif
     }
 
     public void ResetGame()
@@ -259,13 +255,6 @@ public class DeckManager : MonoBehaviour
     {
         StartCoroutine(DrawCards(2));
     }
-
-    private void OnDecardCard()
-    {
-        //DiscardCards(2);
-        StartCoroutine(DrawCards(2));
-    }
-
 
     void SetGameSpeed(float speed)
     {
